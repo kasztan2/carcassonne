@@ -1,6 +1,11 @@
+from logic import CarcassonneGame
+
 
 def main():
-    pass
+    game = CarcassonneGame.from_file_and_names(
+        "assets/default_tileset", ["Alice", "Bob"]
+    )
 
-if __path__ == '__main__':
+
+if __name__ == "__main__":
     main()
