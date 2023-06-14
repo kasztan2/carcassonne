@@ -42,7 +42,6 @@ class WelcomeScene(Scene):
         pg.display.flip()
 
     def validateNumber(self):
-        print(self.numberOfPlayers.get_text())
         if self.numberOfPlayers.get_text() == "":
             return False
 
@@ -61,6 +60,14 @@ class WelcomeScene(Scene):
 
                     self.data["numPlayers"] = int(self.numberOfPlayers.get_text())
                     self.phase = 1
-                    # del self.numberOfPlayers
-                    print(self.data["numPlayers"])
+                    self.numberOfPlayers.disable()
                     self.parent.ui_manager.clear_and_reset()
+                    self.nameInputs = list(
+                        map(
+                            lambda x: UITextEntryLine(
+                                relative_rect=pg.rect.Rect(100, 100 + 50 * x, 200, 40),
+                                manager=self.parent.ui_manager,
+                            ),
+                            range(self.data["numPlayers"]),
+                        )
+                    )
