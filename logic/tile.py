@@ -3,7 +3,9 @@ from typing import Sequence
 
 
 class Tile(object):
-    def __init__(self, game: "CarcassonneGame", features: Sequence[Feature]) -> None:
+    def __init__(
+        self, game: "logic.CarcassonneGame", features: Sequence[Feature]
+    ) -> None:
         self.game = game
         self.features = features
 

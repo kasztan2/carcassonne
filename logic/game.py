@@ -84,8 +84,6 @@ class CarcassonneGame:
         for name in playerNames:
             players.append(Player(name, colors.pop()))
 
-        # return cls(startingTile, tileset, players)
-
         obj = cls(startingTile, tileset, players)
 
         for tile in tileset:
