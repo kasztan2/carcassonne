@@ -1,27 +1,7 @@
 from abc import abstractmethod
 from pygame.locals import *
 import pygame as pg
-
-
-# https://pygame.readthedocs.io/en/latest/5_app/app.html#add-the-text-class
-class TextWidget(object):
-    def __init__(
-        self,
-        parent: "GameView",
-        text: str,
-        fontsize: int,
-        pos: tuple[int, int],
-        color: tuple[int, int, int],
-    ):
-        self.parent = parent
-        self.pos = pos
-        self.font = pg.font.Font(None, fontsize)
-        self.img = self.font.render(text, True, color)
-        self.rect = self.img.get_rect()
-        self.rect.topleft = self.pos
-
-    def draw(self):
-        self.parent.screen.blit(self.img, self.rect)
+from view.ui_widgets import TextWidget
 
 
 class Scene:
