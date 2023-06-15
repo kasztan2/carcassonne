@@ -3,7 +3,7 @@ from pygame.locals import *
 import pygame as pg
 import pygame_gui as gui
 from pygame_gui.elements.ui_text_entry_line import UITextEntryLine
-from view.ui_widgets import TextWidget
+from view.ui_widgets import TextWidget, BoardWidget
 from logic.game import CarcassonneGame
 
 
@@ -34,7 +34,7 @@ class WelcomeScene(Scene):
     def __init__(self, parent):
         super().__init__(parent, Color("chartreuse4"))
         self.welcomeText = TextWidget(
-            parent, "Welcome to the Carcassonne Game!", 50, (0, 0), (0, 0, 0)
+            self, "Welcome to the Carcassonne Game!", 50, (0, 0), (0, 0, 0)
         )
 
         self.label = gui.elements.UILabel(
@@ -117,4 +117,4 @@ class WelcomeScene(Scene):
 class GameScene(Scene):
     def __init__(self, parent):
         super().__init__(parent, Color("blue"))
-        self.board = dict()
+        self.board = BoardWidget(self)
