@@ -20,6 +20,8 @@ class CarcassonneGame:
         self.board = dict()
         self.board[Coords(0, 0)] = starting_tile
 
+        self.boardCallback = None
+
     @staticmethod
     def parseFeatureText(feature: str) -> Feature:
         def parseConnections(t: str):

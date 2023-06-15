@@ -32,7 +32,7 @@ class Scene:
 
 class WelcomeScene(Scene):
     def __init__(self, parent):
-        super().__init__(parent, Color("blue"))
+        super().__init__(parent, Color("chartreuse4"))
         self.welcomeText = TextWidget(
             parent, "Welcome to the Carcassonne Game!", 50, (0, 0), (0, 0, 0)
         )
@@ -112,3 +112,9 @@ class WelcomeScene(Scene):
                         "assets/default_tileset", self.data["names"]
                     )
                     self.parent.nextScene()
+
+
+class GameScene(Scene):
+    def __init__(self, parent):
+        super().__init__(parent, Color("blue"))
+        self.board = dict()
