@@ -7,16 +7,18 @@ from view.ui_widgets import TextWidget
 
 
 class Scene:
-    def __init__(self, parent, background_color):
+    def __init__(self, parent, background_color=Color("blue")):
         self.parent = parent
         self.background_color = background_color
-        self.background = pg.Surface((800, 800))
+        x, y = self.parent.screen.get_size()
+        self.background = pg.Surface((x, y))
         self.background.fill(self.background_color)
 
         self.clear()
 
     def clear(self):
-        self.parent.screen.blit(self.background, (0, 0))
+        x, y = self.parent.screen.get_size()
+        self.parent.screen.blit(pg.transform.scale(self.background, (x, y)), (0, 0))
 
     @abstractmethod
     def draw(self):
@@ -34,9 +36,13 @@ class WelcomeScene(Scene):
             parent, "Welcome to the Carcassonne Game!", 50, (0, 0), (0, 0, 0)
         )
 
-        # self.parent.screen.fill(self.background_color)
+        self.label = gui.elements.UILabel(
+            pg.rect.Rect(200, 100, 400, 100),
+            "Enter the number of players (submit using enter)",
+            self.parent.ui_manager,
+        )
         self.numberOfPlayers = UITextEntryLine(
-            relative_rect=pg.rect.Rect(200, 200, 300, 300),
+            relative_rect=pg.rect.Rect(200, 200, 400, 50),
             manager=self.parent.ui_manager,
         )
         self.numberOfPlayers.set_allowed_characters("numbers")
@@ -59,7 +65,9 @@ class WelcomeScene(Scene):
         return False
 
     def process_events(self, event):
-        if event.type == KEYDOWN:
+        if event.type == VIDEORESIZE:
+            self.clear()
+        elif event.type == KEYDOWN:
             if event.key == K_RETURN:
                 if self.phase == 0:
                     if not self.validateNumber():
