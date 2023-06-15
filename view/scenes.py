@@ -10,6 +10,13 @@ class Scene:
     def __init__(self, parent, background_color):
         self.parent = parent
         self.background_color = background_color
+        self.background = pg.Surface((800, 800))
+        self.background.fill(self.background_color)
+
+        self.clear()
+
+    def clear(self):
+        self.parent.screen.blit(self.background, (0, 0))
 
     @abstractmethod
     def draw(self):
@@ -27,7 +34,7 @@ class WelcomeScene(Scene):
             parent, "Welcome to the Carcassonne Game!", 50, (0, 0), (0, 0, 0)
         )
 
-        self.parent.screen.fill(self.background_color)
+        # self.parent.screen.fill(self.background_color)
         self.numberOfPlayers = UITextEntryLine(
             relative_rect=pg.rect.Rect(200, 200, 300, 300),
             manager=self.parent.ui_manager,
@@ -60,8 +67,8 @@ class WelcomeScene(Scene):
 
                     self.data["numPlayers"] = int(self.numberOfPlayers.get_text())
                     self.phase = 1
-                    self.numberOfPlayers.disable()
-                    self.parent.ui_manager.clear_and_reset()
+                    self.numberOfPlayers.hide()
+                    self.clear()
                     self.nameInputs = list(
                         map(
                             lambda x: UITextEntryLine(

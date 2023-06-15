@@ -39,7 +39,6 @@ class GameView(object, metaclass=Singleton):
             self.ui_manager.update(time_delta)
 
             self.scene.draw()
-
             self.ui_manager.draw_ui(self.screen)
 
             pg.display.update()
