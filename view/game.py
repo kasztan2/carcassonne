@@ -16,6 +16,8 @@ class Singleton(type):
 
 class GameView(object, metaclass=Singleton):
     def __init__(self):
+        self.game = None
+
         pg.init()
         self.screen = pg.display.set_mode((800, 800), RESIZABLE)
         pg.display.set_caption("Carcassonne game")
@@ -26,6 +28,7 @@ class GameView(object, metaclass=Singleton):
 
         self.scenes = [WelcomeScene(self)]
         self.scene = self.scenes[0]
+        self.sceneIndex = 0
 
     def run(self):
         time_delta = self.clock.tick(60) / 1000.0
@@ -44,3 +47,9 @@ class GameView(object, metaclass=Singleton):
             pg.display.update()
 
         pg.quit()
+
+    def nextScene(self):
+        self.sceneIndex += 1
+        if self.sceneIndex >= len(self.scenes):
+            raise Exception("scene index out of range")
+        self.scene = self.scenes[self.sceneIndex]

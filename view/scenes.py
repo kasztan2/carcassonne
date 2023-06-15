@@ -4,6 +4,7 @@ import pygame as pg
 import pygame_gui as gui
 from pygame_gui.elements.ui_text_entry_line import UITextEntryLine
 from view.ui_widgets import TextWidget
+from logic.game import CarcassonneGame
 
 
 class Scene:
@@ -64,6 +65,19 @@ class WelcomeScene(Scene):
 
         return False
 
+    def validateNames(self):
+        names = []
+        for field in self.nameInputs:
+            names.append(field.get_text())
+
+        if any(name == "" for name in names):
+            return False
+
+        if len(names) != len(set(names)):
+            return False
+
+        return True
+
     def process_events(self, event):
         if event.type == VIDEORESIZE:
             self.clear()
@@ -71,6 +85,7 @@ class WelcomeScene(Scene):
             if event.key == K_RETURN:
                 if self.phase == 0:
                     if not self.validateNumber():
+                        # TODO tell the user
                         return
 
                     self.data["numPlayers"] = int(self.numberOfPlayers.get_text())
@@ -80,9 +95,20 @@ class WelcomeScene(Scene):
                     self.nameInputs = list(
                         map(
                             lambda x: UITextEntryLine(
-                                relative_rect=pg.rect.Rect(100, 100 + 50 * x, 200, 40),
+                                relative_rect=pg.rect.Rect(200, 200 + 60 * x, 400, 50),
                                 manager=self.parent.ui_manager,
                             ),
                             range(self.data["numPlayers"]),
                         )
                     )
+                    self.label.set_text("Enter names:")
+                else:
+                    if not self.validateNames():
+                        # TODO tell the user
+                        return
+
+                    self.data["names"] = [field.get_text() for field in self.nameInputs]
+                    self.parent.game = CarcassonneGame.from_file_and_names(
+                        "assets/default_tileset", self.data["names"]
+                    )
+                    self.parent.nextScene()
