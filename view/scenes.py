@@ -132,7 +132,7 @@ def alignMousePosition(mousePosition, screenSize, tileSize) -> tuple[int, int]:
     coords[1] -= screenSize[1] / 2 - tileSize / 2
     coords[0] //= tileSize
     coords[1] //= tileSize
-    return coords
+    return (int(coords[0]), int(coords[1]))
 
 
 class GameScene(Scene):
@@ -173,6 +173,22 @@ class GameScene(Scene):
         elif event.type == KEYDOWN:
             if event.key == K_r:
                 if self.phase == 0 and self.board.tile_to_place is not None:
-                    self.board.tile_to_place.tile.rotate(1)
+                    self.parent.game.tileset[-1].rotate(1)
                     self.board.tile_to_place.render()
                     self.clear()
+        elif event.type == MOUSEBUTTONUP and event.button == 1:
+            if self.phase == 0 and self.board.tile_to_place is not None:
+                self.board.tile_to_place.coords = alignMousePosition(
+                    event.pos,
+                    self.parent.screen.get_size(),
+                    self.board._get_real_size(),
+                )
+
+                try:
+                    coords = self.board.tile_to_place.coords
+                    self.parent.game.place_tile(self.board.tile_to_place.tile, coords)
+                    self.board.update_tile(self.board.tile_to_place.tile, coords)
+                    self.board.set_tile_to_place(self.parent.game.get_current_tile())
+                except Exception as e:
+                    print("Can't place tile")
+                    print(e)

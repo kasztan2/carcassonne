@@ -5,6 +5,7 @@ from logic.tile import Tile
 import numpy as np
 from logic.const import FEATURE_TYPES
 from view.const import COLORS
+from logic.utils import Coords
 
 
 class UIWidget(object):

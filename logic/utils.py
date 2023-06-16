@@ -32,7 +32,7 @@ class Coords(object):
         """Returns a list of adjacent coords (without itself)"""
         return [
             Coords(self.x + x, self.y + y)
-            for x, y in [(-1, 0), (0, 1), (-1, 0), (0, -1)]
+            for x, y in [(-1, 0), (0, -1), (1, 0), (0, 1)]
         ]
 
     def get_coords_around(self) -> Sequence["Coords"]:

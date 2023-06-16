@@ -4,7 +4,7 @@ from logic.utils import Coords, parse_connection_number, invert_side, get_side_c
 from logic.player import Player
 from logic.const import PLAYER_COLORS, FEATURE_TYPES
 from logic.feature import Feature
-from copy import copy
+from copy import copy, deepcopy
 import random
 
 
@@ -12,6 +12,7 @@ class CarcassonneGame:
     def __init__(
         self, starting_tile: Tile, tileset: Sequence[Tile], players: Sequence[Player]
     ):
+        random.seed(0)
         self.tileset = copy(tileset)
         random.shuffle(self.tileset)
         self.players = copy(players)
@@ -20,22 +21,26 @@ class CarcassonneGame:
         self.board = dict()
         self.board[Coords(0, 0)] = starting_tile
 
-        self.boardCallback = None
-
     def get_current_player_name(self):
         return self.players[self.turn].name
 
     def get_current_tile(self):
+        print(f"Current tile: {self.tileset[-1]}")
         return self.tileset[-1]
 
-    def place_tile(self, coords: Coords | tuple[int, int]):
+    def place_tile(self, tile: Tile, coords: Coords | tuple[int, int] | list) -> None:
         if len(self.tileset) == 0:
             raise ValueError("No tiles left")
 
-        if isinstance(coords, tuple):
+        if isinstance(coords, tuple) or isinstance(coords, list):
             coords = Coords(coords[0], coords[1])
+
+        if coords in self.board.keys():
+            raise ValueError("Tile already there")
+
         tile = self.get_current_tile()
         sides = range(4)
+
         adjacent_tiles = coords.get_adjacent_coords()
 
         anyAdjacent = False
@@ -43,20 +48,29 @@ class CarcassonneGame:
             if adjacent_tiles[side] in self.board.keys():
                 anyAdjacent = True
                 adjacent_tile = self.board[adjacent_tiles[side]]
-                if (
-                    get_side_conn_list(tile, side)
-                    != get_side_conn_list(adjacent_tile, invert_side(side)).reverse()
-                ):
-                    return False
+                my_side = get_side_conn_list(tile, side)
+                neighbor_side = list(
+                    reversed(get_side_conn_list(adjacent_tile, invert_side(side)))
+                )
+                # print(f"***\nSide: {side}")
+                # print(f"Checking neighbor at {adjacent_tiles[side]}")
+                # print(my_side, neighbor_side)
+                # print(f"my side number is: {side}")
+                # print(f"neighbor side number is: {invert_side(side)}")
+                for conn in range(3):
+                    if my_side[conn] == neighbor_side[conn] or set(
+                        [my_side[conn], neighbor_side[conn]]
+                    ) == set([1, 2]):
+                        continue
+                    # print(f"Wrong neighbor: {adjacent_tile}")
+                    # print(f"I think it is: {self.board[adjacent_tiles[side]]}")
+                    raise Exception("Not matching adjacent tile")
 
         if not anyAdjacent:
-            return False
+            raise Exception("No adjacent tile")
 
         self.board[coords] = tile
         self.tileset.pop()
-
-        if self.boardCallback is not None:
-            self.boardCallback(tile, coords)
 
     @staticmethod
     def parseFeatureText(feature: str) -> Feature:
@@ -111,7 +125,7 @@ class CarcassonneGame:
                 n -= 1
 
             for i in range(n):
-                tileset.append(copy(tile))
+                tileset.append(deepcopy(tile))
 
             tileset[-1].ensureCorrect()
 

@@ -1,0 +1,1 @@
+{Coords(0, 0): Tile[Road[1,7];Farm[0,8,9,10,11];Farm[2,6];City[3,4,5]], Coords(1, 0): Tile[Road[4,1];Farm[3,2];Farm[5,6,7,8,9,10,11,0]], Coords(-1, 0): Tile[Road[7,4];Farm[6,5];Farm[8,9,10,11,0,1,2,3]]}
