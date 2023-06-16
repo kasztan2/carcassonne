@@ -9,7 +9,7 @@ def invert_side(side: int) -> int:
 
 
 def parse_connection_number(connection_number: int) -> Connection:
-    return Connection(connection_number // 3 + 1, connection_number % 3)
+    return Connection(connection_number // 3, connection_number % 3)
 
 
 class Coords(object):
@@ -31,3 +31,12 @@ class Coords(object):
         return [
             (Coords(self.x + x, self.y + y) for x, y in product([-1, 0, 1], repeat=2))
         ]
+
+    def __eq__(self, __value: object) -> bool:
+        return self.x == __value.x and self.y == __value.y
+
+    def __repr__(self):
+        return f"Coords({self.x}, {self.y})"
+
+    def __hash__(self) -> int:
+        return self.x * 1000 + self.y

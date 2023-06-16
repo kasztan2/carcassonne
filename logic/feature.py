@@ -10,6 +10,9 @@ class Connection(object):
         self.side += 1
         self.side %= 4
 
+    def to_number(self) -> int:
+        return self.side * 3 + self.number
+
 
 class Feature(object):
     def __init__(self, _type: int, connections: Sequence[Connection]) -> None:

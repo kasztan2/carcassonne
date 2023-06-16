@@ -5,10 +5,11 @@ import pygame_gui as gui
 from pygame_gui.elements.ui_text_entry_line import UITextEntryLine
 from view.ui_widgets import TextWidget, BoardWidget
 from logic.game import CarcassonneGame
+from logic.utils import Coords
 
 
 class Scene:
-    def __init__(self, parent, background_color=Color("blue")):
+    def __init__(self, parent, background_color):
         self.parent = parent
         self.background_color = background_color
         x, y = self.parent.screen.get_size()
@@ -27,6 +28,10 @@ class Scene:
 
     @abstractmethod
     def process_events(self, event):
+        pass
+
+    @abstractmethod
+    def setup(self):
         pass
 
 
@@ -111,10 +116,30 @@ class WelcomeScene(Scene):
                     self.parent.game = CarcassonneGame.from_file_and_names(
                         "assets/default_tileset", self.data["names"]
                     )
+                    for field in self.nameInputs:
+                        field.hide()
+                    self.label.hide()
                     self.parent.nextScene()
+
+    def setup(self):
+        self.clear()
 
 
 class GameScene(Scene):
     def __init__(self, parent):
         super().__init__(parent, Color("blue"))
-        self.board = BoardWidget(self)
+        self.board = BoardWidget(self, 200)
+        # self.board.update_tile(self.parent.game.board[(0, 0)], (0, 0))
+
+    def draw(self):
+        self.board.draw()
+
+    def setup(self):
+        self.clear()
+        print(self.parent.game.board)
+        self.board.update_tile(self.parent.game.board[Coords(0, 0)], (0, 0))
+
+    def process_events(self, event):
+        if event.type == VIDEORESIZE:
+            self.clear()
+            self.board.on_resize()
