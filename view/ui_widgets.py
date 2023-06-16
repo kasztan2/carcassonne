@@ -48,18 +48,31 @@ class BoardWidget(UIWidget):
         super().__init__(parent, (0, 0))
         self.board = dict()
         self.tile_size = tile_size
+        self.tile_to_place = None
+
+    def set_tile_to_place(self, tile_to_place):
+        self.tile_to_place = TileWidget(tile_to_place, (0, 0), self.tile_size, self)
 
     def update_tile(self, new_tile: Tile, pos: tuple[int, int]):
         self.board[pos] = TileWidget(new_tile, pos, self.tile_size, self)
 
     def draw(self):
+        if self.tile_to_place is not None:
+            self.parent.clear()
+
         for tile in self.board.values():
             tile.draw()
+
+        if self.tile_to_place is not None:
+            self.tile_to_place.draw()
 
     def on_resize(self):
         self.parent.clear()
         for tile in self.board.values():
             tile.on_resize()
+
+    def _get_real_size(self):
+        return self.parent.boardZoom * self.tile_size
 
 
 class TileWidget(UIWidget):
@@ -68,9 +81,8 @@ class TileWidget(UIWidget):
         self.tile = tile
         self.tile_size = size
         self.coords = pos
-        self.img = pg.Surface((size, size))
-        self.img.fill(COLORS.FARM)
-        self.rect = self.img.get_rect()
+        self.img = None
+        self.rect = None
         self.render()
         self.on_resize()
 
@@ -95,6 +107,11 @@ class TileWidget(UIWidget):
         ][number]
 
     def render(self):
+        self.img = pg.Surface((self.tile_size, self.tile_size))
+        self.img.fill(COLORS.FARM)
+
+        self.rect = self.img.get_rect()
+
         for feature in self.tile.features:
             conns = feature.connections
             points = []

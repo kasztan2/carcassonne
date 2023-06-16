@@ -20,6 +20,9 @@ class Feature(object):
         self.connections = connections
 
     def rotate(self, times: int) -> None:
+        if times == 0:
+            return
+
         for connection in self.connections:
             connection.rotate_once()
 

@@ -3,7 +3,7 @@ from pygame.locals import *
 import pygame as pg
 import pygame_gui as gui
 from pygame_gui.elements.ui_text_entry_line import UITextEntryLine
-from view.ui_widgets import TextWidget, BoardWidget
+from view.ui_widgets import TextWidget, BoardWidget, TileWidget
 from logic.game import CarcassonneGame
 from logic.utils import Coords
 
@@ -125,6 +125,16 @@ class WelcomeScene(Scene):
         self.clear()
 
 
+# mouse position to coords
+def alignMousePosition(mousePosition, screenSize, tileSize) -> tuple[int, int]:
+    coords = [mousePosition[0], mousePosition[1]]
+    coords[0] -= screenSize[0] / 2 - tileSize / 2
+    coords[1] -= screenSize[1] / 2 - tileSize / 2
+    coords[0] //= tileSize
+    coords[1] //= tileSize
+    return coords
+
+
 class GameScene(Scene):
     def __init__(self, parent):
         super().__init__(parent, Color("blue"))
@@ -137,6 +147,13 @@ class GameScene(Scene):
     def setup(self):
         self.clear()
         self.board.update_tile(self.parent.game.board[Coords(0, 0)], (0, 0))
+        self.label = gui.elements.UILabel(
+            pg.Rect(0, 0, 200, 50),
+            f"Playing now: {self.parent.game.get_current_player_name()}",
+            self.parent.ui_manager,
+        )
+        self.phase = 0
+        self.board.set_tile_to_place(self.parent.game.get_current_tile())
 
     def process_events(self, event):
         if event.type == VIDEORESIZE:
@@ -145,3 +162,17 @@ class GameScene(Scene):
         elif event.type == MOUSEWHEEL:
             self.boardZoom += self.boardZoom * event.y * 0.1
             self.board.on_resize()
+        elif event.type == MOUSEMOTION:
+            if self.phase == 0 and self.board.tile_to_place is not None:
+                self.board.tile_to_place.coords = alignMousePosition(
+                    event.pos,
+                    self.parent.screen.get_size(),
+                    self.board._get_real_size(),
+                )
+                self.board.tile_to_place.on_resize()
+        elif event.type == KEYDOWN:
+            if event.key == K_r:
+                if self.phase == 0 and self.board.tile_to_place is not None:
+                    self.board.tile_to_place.tile.rotate(1)
+                    self.board.tile_to_place.render()
+                    self.clear()

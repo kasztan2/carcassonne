@@ -1,6 +1,6 @@
 from typing import Sequence
 from logic.tile import Tile
-from logic.utils import Coords, parse_connection_number
+from logic.utils import Coords, parse_connection_number, invert_side, get_side_conn_list
 from logic.player import Player
 from logic.const import PLAYER_COLORS, FEATURE_TYPES
 from logic.feature import Feature
@@ -21,6 +21,42 @@ class CarcassonneGame:
         self.board[Coords(0, 0)] = starting_tile
 
         self.boardCallback = None
+
+    def get_current_player_name(self):
+        return self.players[self.turn].name
+
+    def get_current_tile(self):
+        return self.tileset[-1]
+
+    def place_tile(self, coords: Coords | tuple[int, int]):
+        if len(self.tileset) == 0:
+            raise ValueError("No tiles left")
+
+        if isinstance(coords, tuple):
+            coords = Coords(coords[0], coords[1])
+        tile = self.get_current_tile()
+        sides = range(4)
+        adjacent_tiles = coords.get_adjacent_coords()
+
+        anyAdjacent = False
+        for side in sides:
+            if adjacent_tiles[side] in self.board.keys():
+                anyAdjacent = True
+                adjacent_tile = self.board[adjacent_tiles[side]]
+                if (
+                    get_side_conn_list(tile, side)
+                    != get_side_conn_list(adjacent_tile, invert_side(side)).reverse()
+                ):
+                    return False
+
+        if not anyAdjacent:
+            return False
+
+        self.board[coords] = tile
+        self.tileset.pop()
+
+        if self.boardCallback is not None:
+            self.boardCallback(tile, coords)
 
     @staticmethod
     def parseFeatureText(feature: str) -> Feature:

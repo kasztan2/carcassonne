@@ -8,6 +8,15 @@ def invert_side(side: int) -> int:
     return (side + 2) % 4
 
 
+def get_side_conn_list(tile, side) -> list:
+    output = {}
+    for feature in tile.features:
+        for conn in feature.connections:
+            if conn.side == side:
+                output[conn.number] = feature.type
+    return [output[0], output[1], output[2]]
+
+
 def parse_connection_number(connection_number: int) -> Connection:
     return Connection(connection_number // 3, connection_number % 3)
 
@@ -23,7 +32,7 @@ class Coords(object):
         """Returns a list of adjacent coords (without itself)"""
         return [
             Coords(self.x + x, self.y + y)
-            for x, y in [(-1, 0), (1, 0), (0, -1), (0, 1)]
+            for x, y in [(-1, 0), (0, 1), (-1, 0), (0, -1)]
         ]
 
     def get_coords_around(self) -> Sequence["Coords"]:
