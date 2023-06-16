@@ -57,6 +57,7 @@ class BoardWidget(UIWidget):
             tile.draw()
 
     def on_resize(self):
+        self.parent.clear()
         for tile in self.board.values():
             tile.on_resize()
 
@@ -135,14 +136,25 @@ class TileWidget(UIWidget):
             else:
                 raise ValueError("Incorrect feature type")
 
+    def _get_real_size(self):
+        return self.parent.parent.boardZoom * self.tile_size
+
+    # def _calc_pos(self):
+    #    realSize=self._get_real_size()
+    #    self.pos=(self.coords[0]*realSize-realSize/2, self.coords[1]*realSize-realSize/2)
+
     def draw(self):
-        self.get_screen().blit(self.img, self.pos)
+        realSize = self._get_real_size()
+        self.get_screen().blit(
+            pg.transform.scale(self.img, (realSize, realSize)), self.pos
+        )
 
     def on_resize(self):
         x, y = self.get_screen().get_size()
         x /= 2
         y /= 2
+        realSize = self._get_real_size()
         self.pos = (
-            x + self.coords[0] * self.tile_size - self.tile_size / 2,
-            y + self.coords[1] * self.tile_size - self.tile_size / 2,
+            x + self.coords[0] * realSize - realSize / 2,
+            y + self.coords[1] * realSize - realSize / 2,
         )

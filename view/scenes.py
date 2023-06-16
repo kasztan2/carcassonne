@@ -129,17 +129,19 @@ class GameScene(Scene):
     def __init__(self, parent):
         super().__init__(parent, Color("blue"))
         self.board = BoardWidget(self, 200)
-        # self.board.update_tile(self.parent.game.board[(0, 0)], (0, 0))
+        self.boardZoom = 1.0
 
     def draw(self):
         self.board.draw()
 
     def setup(self):
         self.clear()
-        print(self.parent.game.board)
         self.board.update_tile(self.parent.game.board[Coords(0, 0)], (0, 0))
 
     def process_events(self, event):
         if event.type == VIDEORESIZE:
             self.clear()
+            self.board.on_resize()
+        elif event.type == MOUSEWHEEL:
+            self.boardZoom += self.boardZoom * event.y * 0.1
             self.board.on_resize()
