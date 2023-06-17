@@ -25,6 +25,7 @@ class Feature(object):
     def __init__(self, _type: int, connections: Sequence[Connection]) -> None:
         self.type = _type
         self.connections = connections
+        self.meeple = None
         self.uuid = uuid.uuid4()
 
     def rotate(self, times: int) -> None:

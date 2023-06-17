@@ -26,6 +26,10 @@ class Tile(object):
         if len(conns) != 12:
             raise AssertionError("A tile must have exactly 12 connections")
 
+    def placeMeeple(self, ind, player):
+        player.minusMeeple()
+        self.features[ind].meeple = player
+
     def __repr__(self):
         return f"Tile[{';'.join([x.__repr__() for x in self.features])}]"
 

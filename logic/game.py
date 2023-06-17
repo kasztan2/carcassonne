@@ -20,15 +20,23 @@ class CarcassonneGame:
         self.turn = 0
         self.board = dict()
         self.board[Coords(0, 0)] = starting_tile
+        self.lastTile = None
+        self.phase = 0
 
     def get_current_player_name(self):
         return self.players[self.turn].name
+
+    def get_current_player_color(self):
+        return self.players[self.turn].color
 
     def get_current_tile(self):
         print(f"Current tile: {self.tileset[-1]}")
         return self.tileset[-1]
 
     def place_tile(self, tile: Tile, coords: Coords | tuple[int, int] | list) -> None:
+        if self.phase != 0:
+            raise Exception("Can't place tile while placing a meeple")
+
         if len(self.tileset) == 0:
             raise ValueError("No tiles left")
 
@@ -71,6 +79,27 @@ class CarcassonneGame:
 
         self.board[coords] = tile
         self.tileset.pop()
+
+        self.lastTile = tile
+
+        self.phase = 1
+
+    def placeMeeple(self, feature_index: int):
+        if self.phase != 1:
+            raise Exception("Can't place meeple while placing a tile")
+
+        try:
+            if feature_index != -1:
+                self.lastTile.placeMeeple(feature_index, self.players[self.turn])
+            self.next_turn()
+            self.phase = 0
+        except Exception as e:
+            print("Can't place meeple")
+            print(e)
+
+    def next_turn(self):
+        self.turn += 1
+        self.turn %= len(self.players)
 
     @staticmethod
     def parseFeatureText(feature: str) -> Feature:

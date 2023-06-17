@@ -140,9 +140,29 @@ class GameScene(Scene):
         super().__init__(parent, Color("blue"))
         self.board = BoardWidget(self, 200)
         self.boardZoom = 1.0
+        self.meeplePointer = -1
+
+        self.meeplePointerImage = pg.Surface((20, 20))
 
     def draw(self):
         self.board.draw()
+
+        if self.phase == 1 and self.meeplePointer != -1:
+            self.meeplePointerImage.fill(self.parent.game.get_current_player_color())
+            self.parent.screen.blit(
+                self.meeplePointerImage,
+                tuple(
+                    map(
+                        sum,
+                        zip(
+                            self.board.board[self.board.lastPos].pos,
+                            self.board.board[self.board.lastPos].feature_points[
+                                self.meeplePointer
+                            ],
+                        ),
+                    )
+                ),
+            )
 
     def setup(self):
         self.clear()
@@ -176,6 +196,11 @@ class GameScene(Scene):
                     self.parent.game.tileset[-1].rotate(1)
                     self.board.tile_to_place.render()
                     self.clear()
+            elif event.key == K_TAB:
+                if self.phase == 1:
+                    self.meeplePointer += 1
+                    if self.meeplePointer == len(self.parent.game.lastTile.features):
+                        self.meeplePointer = -1
         elif event.type == MOUSEBUTTONUP and event.button == 1:
             if self.phase == 0 and self.board.tile_to_place is not None:
                 self.board.tile_to_place.coords = alignMousePosition(
@@ -188,7 +213,20 @@ class GameScene(Scene):
                     coords = self.board.tile_to_place.coords
                     self.parent.game.place_tile(self.board.tile_to_place.tile, coords)
                     self.board.update_tile(self.board.tile_to_place.tile, coords)
-                    self.board.set_tile_to_place(self.parent.game.get_current_tile())
+                    # self.board.set_tile_to_place(self.parent.game.get_current_tile())
+                    self.board.tile_to_place = None
+                    self.phase = 1
+                    self.meeplePointer = -1
                 except Exception as e:
                     print("Can't place tile")
+                    print(e)
+            elif self.phase == 1:
+                try:
+                    self.parent.game.placeMeeple(self.meeplePointer)
+                    # self.board.update_tile(self.parent.game.lastTile,
+                    self.board.last.render()
+                    self.phase = 0
+                    self.board.set_tile_to_place(self.parent.game.get_current_tile())
+                except Exception as e:
+                    print("Can't place meeple")
                     print(e)

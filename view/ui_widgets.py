@@ -6,6 +6,7 @@ import numpy as np
 from logic.const import FEATURE_TYPES
 from view.const import COLORS
 from logic.utils import Coords
+from copy import copy
 
 
 class UIWidget(object):
@@ -50,12 +51,14 @@ class BoardWidget(UIWidget):
         self.board = dict()
         self.tile_size = tile_size
         self.tile_to_place = None
+        self.lastPos = (0, 0)
 
     def set_tile_to_place(self, tile_to_place):
         self.tile_to_place = TileWidget(tile_to_place, (0, 0), self.tile_size, self)
 
     def update_tile(self, new_tile: Tile, pos: tuple[int, int]):
         self.board[pos] = TileWidget(new_tile, pos, self.tile_size, self)
+        self.lastPos = pos  # self.board[pos]
 
     def draw(self):
         if self.tile_to_place is not None:
@@ -84,6 +87,7 @@ class TileWidget(UIWidget):
         self.coords = pos
         self.img = None
         self.rect = None
+        self.feature_points = []
         self.render()
         self.on_resize()
 
@@ -113,16 +117,19 @@ class TileWidget(UIWidget):
 
         self.rect = self.img.get_rect()
 
+        self.feature_points = []
         for feature in self.tile.features:
             conns = feature.connections
             points = []
             middle_point = (self.tile_size / 2, self.tile_size / 2)
             if len(conns) > 0:
                 points = [self._connection_pos(c) for c in conns]
+
             if feature.type == FEATURE_TYPES.CLOISTER:
                 pg.draw.circle(
                     self.img, COLORS.CLOISTER, middle_point, self.tile_size / 4, 0
                 )
+                self.feature_points.append(copy(middle_point))
             elif (
                 feature.type == FEATURE_TYPES.CITY
                 or feature.type == FEATURE_TYPES.PENNANT_CITY
@@ -144,15 +151,29 @@ class TileWidget(UIWidget):
                 if feature.type == FEATURE_TYPES.PENNANT_CITY:
                     col = COLORS.PENNANT_CITY
                 pg.draw.polygon(self.img, col, points, 0)
+
+                self.feature_points.append(tuple(np.average(points, axis=0)))
             elif feature.type == FEATURE_TYPES.ROAD:
                 if len(points) == 1:
                     points.append(middle_point)
 
                 pg.draw.line(self.img, COLORS.ROAD, points[0], points[1], 5)
+
+                self.feature_points.append(tuple(np.average(points, axis=0)))
             elif feature.type == FEATURE_TYPES.FARM:
-                pass  # already the background
+                # already the green background
+                self.feature_points.append(tuple(np.average(points, axis=0)))
             else:
                 raise ValueError("Incorrect feature type")
+
+            if feature.meeple is not None:
+                meeple_pos = self.feature_points[-1]
+                x, y = meeple_pos
+                pg.draw.rect(
+                    self.img, feature.meeple.color, ((x - 10, y - 10), (20, 20))
+                )
+
+        print(f"Rendering tile done: {self.feature_points}")
 
     def _get_real_size(self):
         return self.parent.parent.boardZoom * self.tile_size
