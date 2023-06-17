@@ -5,6 +5,7 @@ from logic.tile import Tile
 import numpy as np
 from logic.const import FEATURE_TYPES
 from view.const import COLORS
+from view.utils import deCornify
 from logic.utils import Coords
 from copy import copy
 
@@ -168,7 +169,7 @@ class TileWidget(UIWidget):
 
             if feature.meeple is not None:
                 meeple_pos = self.feature_points[-1]
-                x, y = meeple_pos
+                x, y = deCornify(meeple_pos, self.tile_size)
                 pg.draw.rect(
                     self.img, feature.meeple.color, ((x - 10, y - 10), (20, 20))
                 )

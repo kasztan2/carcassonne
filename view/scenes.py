@@ -4,8 +4,10 @@ import pygame as pg
 import pygame_gui as gui
 from pygame_gui.elements.ui_text_entry_line import UITextEntryLine
 from view.ui_widgets import TextWidget, BoardWidget, TileWidget
+from view.utils import alignMousePosition, deCornify
 from logic.game import CarcassonneGame
 from logic.utils import Coords
+import numpy as np
 
 
 class Scene:
@@ -125,16 +127,6 @@ class WelcomeScene(Scene):
         self.clear()
 
 
-# mouse position to coords
-def alignMousePosition(mousePosition, screenSize, tileSize) -> tuple[int, int]:
-    coords = [mousePosition[0], mousePosition[1]]
-    coords[0] -= screenSize[0] / 2 - tileSize / 2
-    coords[1] -= screenSize[1] / 2 - tileSize / 2
-    coords[0] //= tileSize
-    coords[1] //= tileSize
-    return (int(coords[0]), int(coords[1]))
-
-
 class GameScene(Scene):
     def __init__(self, parent):
         super().__init__(parent, Color("blue"))
@@ -156,9 +148,13 @@ class GameScene(Scene):
                         sum,
                         zip(
                             self.board.board[self.board.lastPos].pos,
-                            self.board.board[self.board.lastPos].feature_points[
-                                self.meeplePointer
-                            ],
+                            deCornify(
+                                self.board.board[self.board.lastPos].feature_points[
+                                    self.meeplePointer
+                                ],
+                                self.board.tile_size,
+                            ),
+                            (-10, -10),
                         ),
                     )
                 ),
@@ -224,7 +220,7 @@ class GameScene(Scene):
                 try:
                     self.parent.game.placeMeeple(self.meeplePointer)
                     # self.board.update_tile(self.parent.game.lastTile,
-                    self.board.last.render()
+                    self.board.board[self.board.lastPos].render()
                     self.phase = 0
                     self.board.set_tile_to_place(self.parent.game.get_current_tile())
                 except Exception as e:
