@@ -3,9 +3,11 @@ from logic.tile import Tile
 from logic.utils import Coords, parse_connection_number, invert_side, get_side_conn_list
 from logic.player import Player
 from logic.const import PLAYER_COLORS, FEATURE_TYPES
-from logic.feature import Feature
+from logic.feature import Feature, Connection
 from copy import copy, deepcopy
 import random
+from logic.scoring import Scorer
+import traceback
 
 
 class CarcassonneGame:
@@ -22,6 +24,8 @@ class CarcassonneGame:
         self.board[Coords(0, 0)] = starting_tile
         self.lastTile = None
         self.phase = 0
+        self.scorer = Scorer(self)
+        print(self.scorer)
 
     def get_current_player_name(self):
         return self.players[self.turn].name
@@ -33,7 +37,9 @@ class CarcassonneGame:
         print(f"Current tile: {self.tileset[-1]}")
         return self.tileset[-1]
 
-    def place_tile(self, tile: Tile, coords: Coords | tuple[int, int] | list) -> None:
+    def place_tile(
+        self, tile: Tile, coords: Coords | tuple[int, int] | list[int, int]
+    ) -> None:
         if self.phase != 0:
             raise Exception("Can't place tile while placing a meeple")
 
@@ -77,6 +83,35 @@ class CarcassonneGame:
         if not anyAdjacent:
             raise Exception("No adjacent tile")
 
+        for side in sides:
+            if adjacent_tiles[side] in self.board.keys():
+                adjacent_tile = self.board[adjacent_tiles[side]]
+                my_features = [
+                    tile.get_feature_by_connection(Connection(side, x))
+                    for x in range(3)
+                ]
+                neighbor_features = list(
+                    reversed(
+                        [
+                            adjacent_tile.get_feature_by_connection(
+                                Connection(invert_side(side), x)
+                            )
+                            for x in range(3)
+                        ]
+                    )
+                )
+
+                print(f"my tile: {my_features}")
+                print(f"adjacent tile: {neighbor_features}")
+
+                for i in range(3):
+                    print(f"my feature: {my_features[i]}")
+                    print(f"neighbor feature: {neighbor_features[i]}")
+                    my_features[i].bind(neighbor_features[i])
+                    neighbor_features[i].bind(my_features[i])
+
+        tile.coords = coords
+
         self.board[coords] = tile
         self.tileset.pop()
 
@@ -89,13 +124,18 @@ class CarcassonneGame:
             raise Exception("Can't place meeple while placing a tile")
 
         try:
+            # breakpoint()
             if feature_index != -1:
                 self.lastTile.placeMeeple(feature_index, self.players[self.turn])
+                # closing features
+                for feature in self.lastTile.features:
+                    self.scorer.score_closed_feature(feature)
             self.next_turn()
             self.phase = 0
         except Exception as e:
             print("Can't place meeple")
             print(e)
+            traceback.print_exc()
 
     def next_turn(self):
         self.turn += 1
@@ -147,7 +187,7 @@ class CarcassonneGame:
             tile = Tile(None, features)
 
             for feature in tile.features:
-                feature.parentTile = tile
+                feature.parent_tile = tile
 
             if s_tile:
                 startingTile = copy(tile)

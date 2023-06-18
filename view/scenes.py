@@ -8,6 +8,7 @@ from view.utils import alignMousePosition, deCornify
 from logic.game import CarcassonneGame
 from logic.utils import Coords
 import numpy as np
+import traceback
 
 
 class Scene:
@@ -216,6 +217,7 @@ class GameScene(Scene):
                 except Exception as e:
                     print("Can't place tile")
                     print(e)
+                    traceback.print_exc()
             elif self.phase == 1:
                 try:
                     self.parent.game.placeMeeple(self.meeplePointer)

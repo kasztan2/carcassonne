@@ -25,13 +25,20 @@ class Feature(object):
     def __init__(self, _type: int, connections: Sequence[Connection]) -> None:
         self.type = _type
         self.connections = connections
-        self.meeple = None
+        self.meeple: "Player" = None
         self.uuid = uuid.uuid4()
+        self.bindings = []
+        self.parent_tile = None
 
     def rotate(self, times: int) -> None:
         for i in range(times % 4):
             for connection in self.connections:
                 connection.rotate_once()
+
+    def bind(self, feature: "Feature") -> None:
+        # if feature == self:
+        #    raise ValueError("Feature cannot be bound to itself")
+        self.bindings.append(feature)
 
     def __repr__(self):
         num_to_str = {1: "City", 2: "PCity", 3: "Road", 4: "Farm", 5: "Cloister"}

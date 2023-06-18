@@ -10,6 +10,7 @@ class Tile(object):
         self.game = game
         self.features = features
         self.uuid = uuid.uuid4()
+        self.coords = None
 
     def rotate(self, times: int) -> None:
         for feature in self.features:
@@ -30,8 +31,17 @@ class Tile(object):
         player.minusMeeple()
         self.features[ind].meeple = player
 
+    def get_feature_by_connection(self, connection: "Connection") -> Feature:
+        for feature in self.features:
+            if connection in feature.connections:
+                return feature
+
     def __repr__(self):
         return f"Tile[{';'.join([x.__repr__() for x in self.features])}]"
 
     def __eq__(self, other):
         return self.uuid == other.uuid
+
+    def __hash__(self):
+        # a really bad practice here
+        return 0  # hash(self.features)
