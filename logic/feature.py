@@ -36,7 +36,8 @@ class Feature(object):
                 connection.rotate_once()
 
     def bind(self, feature: "Feature") -> None:
-        # if feature == self:
+        if feature == self:
+            return
         #    raise ValueError("Feature cannot be bound to itself")
         self.bindings.append(feature)
 
