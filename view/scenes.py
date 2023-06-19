@@ -252,7 +252,7 @@ class GameScene(Scene):
                     self.parent.game.placeMeeple(self.meeplePointer)
                     tilesChanged = [x.coords for x in self.parent.game.tilesChanged]
                     for tile in tilesChanged:
-                        self.board.board[tile].render()
+                        self.board.board[tile.to_tuple()].render()
                     # self.board.update_tile(self.parent.game.lastTile,
                     self.board.board[self.board.lastPos].render()
                     self.phase = 0

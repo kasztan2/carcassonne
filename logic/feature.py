@@ -39,6 +39,9 @@ class Feature(object):
         if feature == self:
             return
         #    raise ValueError("Feature cannot be bound to itself")
+        print(
+            f"Binding {self} at {self.parent_tile.coords} to {feature} at {feature.parent_tile.coords}"
+        )
         self.bindings.append(feature)
 
     def __repr__(self):

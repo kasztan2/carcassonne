@@ -41,6 +41,9 @@ class Coords(object):
             (Coords(self.x + x, self.y + y) for x, y in product([-1, 0, 1], repeat=2))
         ]
 
+    def to_tuple(self) -> tuple:
+        return (self.x, self.y)
+
     def __eq__(self, __value: object) -> bool:
         return self.x == __value.x and self.y == __value.y
 
