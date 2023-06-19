@@ -11,6 +11,31 @@ import traceback
 
 
 class CarcassonneGame:
+    """
+    Represents the whole game (game logic)
+    Probably makes it possible to create multiple game states in one program
+
+    Attributes
+    ----------
+    tileset : Sequence[Tile]
+        List of all tiles in the game except the starting one
+    players : Sequence[Player]
+        List of players in the game
+    turn : int
+        Index of the player whose turn is now
+    board : dict
+        Dictionary mapping Coords to tiles, represents the actual board (only tiles that have been placed)
+    lastTile : Tile
+        The last (most recent) tile placed in the game
+    phase : int
+        0 - placing a new tile
+        1 - placing a meeple (or decision not to place any)
+    scorer : Scorer
+        Object used for routing on the features and dealing with score
+    tlesChanged : set
+        A set of tiles that have changed in effect of placing the most recent meeple
+    """
+
     def __init__(
         self, starting_tile: Tile, tileset: Sequence[Tile], players: Sequence[Player]
     ):
