@@ -1,7 +1,10 @@
 from logic.feature import Feature
-from typing import Sequence
+from typing import TYPE_CHECKING, Sequence
 from logic.const import FEATURE_TYPES
 from collections import Counter
+
+if TYPE_CHECKING:
+    from logic.player import Player
 
 
 class Scorer(object):

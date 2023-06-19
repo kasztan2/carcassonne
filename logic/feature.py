@@ -1,5 +1,8 @@
-from typing import Sequence
+from typing import TYPE_CHECKING, Sequence
 import uuid
+
+if TYPE_CHECKING:
+    from logic.player import Player
 
 
 class Connection(object):
@@ -25,7 +28,7 @@ class Feature(object):
     def __init__(self, _type: int, connections: Sequence[Connection]) -> None:
         self.type = _type
         self.connections = connections
-        self.meeple: "Player" = None
+        self.meeple: Player = None
         self.uuid = uuid.uuid4()
         self.bindings = []
         self.parent_tile = None

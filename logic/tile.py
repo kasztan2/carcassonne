@@ -1,12 +1,14 @@
 from logic.feature import Feature
-from typing import Sequence
+from typing import TYPE_CHECKING, Sequence
 import uuid
+
+if TYPE_CHECKING:
+    from logic.game import CarcassonneGame
+    from logic.feature import Connection
 
 
 class Tile(object):
-    def __init__(
-        self, game: "logic.CarcassonneGame", features: Sequence[Feature]
-    ) -> None:
+    def __init__(self, game: "CarcassonneGame", features: Sequence[Feature]) -> None:
         self.game = game
         self.features = features
         self.uuid = uuid.uuid4()

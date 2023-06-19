@@ -8,6 +8,10 @@ from view.const import COLORS
 from view.utils import deCornify
 from copy import copy
 import pygame_gui as gui
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from view.scenes import Scene
 
 
 class UIWidget(object):
