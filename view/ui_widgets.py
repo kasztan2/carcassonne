@@ -6,7 +6,6 @@ import numpy as np
 from logic.const import FEATURE_TYPES
 from view.const import COLORS
 from view.utils import deCornify
-from logic.utils import Coords
 from copy import copy
 import pygame_gui as gui
 

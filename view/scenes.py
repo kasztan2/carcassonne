@@ -3,7 +3,7 @@ from pygame.locals import *
 import pygame as pg
 import pygame_gui as gui
 from pygame_gui.elements.ui_text_entry_line import UITextEntryLine
-from view.ui_widgets import TextWidget, BoardWidget, TileWidget, InfoWidget
+from view.ui_widgets import TextWidget, BoardWidget, InfoWidget
 from view.utils import alignMousePosition, deCornify
 from view.const import FONT_SIZE
 from logic.game import CarcassonneGame

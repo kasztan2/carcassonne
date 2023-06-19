@@ -1,8 +1,6 @@
 from logic.feature import Feature
-from logic.tile import Tile
 from typing import Sequence
 from logic.const import FEATURE_TYPES
-from logic.utils import Coords
 from collections import Counter
 
 
