@@ -15,6 +15,8 @@ if TYPE_CHECKING:
 
 
 class UIWidget(object):
+    """Abstract class for custom UI widgets"""
+
     def __init__(self, parent: "Scene", pos: tuple[int, int]):
         self.parent = parent
         self.pos = pos
@@ -24,14 +26,18 @@ class UIWidget(object):
         pass
 
     def get_screen(self):
+        """Get the screen that this feature should be drawn on"""
         return self.parent.parent.parent.screen
 
     def on_resize(self):
+        """Adjust to the new size of the screen"""
         pass
 
 
 # https://pygame.readthedocs.io/en/latest/5_app/app.html#add-the-text-class
 class TextWidget(UIWidget):
+    """A redundant widget that can be replaced by pygame_gui's UILabel"""
+
     def __init__(
         self,
         parent: "Scene",
@@ -51,6 +57,8 @@ class TextWidget(UIWidget):
 
 
 class BoardWidget(UIWidget):
+    """Widget containing tiles on the board and handling the placing of tiles and meeples (basically coordinating the Tile widgets)"""
+
     def __init__(self, parent: "Scene", tile_size: int):
         super().__init__(parent, (0, 0))
         self.board = dict()
@@ -85,6 +93,8 @@ class BoardWidget(UIWidget):
 
 
 class TileWidget(UIWidget):
+    """Tile widget"""
+
     def __init__(self, tile, pos, size, parent):
         super().__init__(parent, (pos[0] * size - size / 2, pos[1] * size - size / 2))
         self.tile = tile
@@ -117,6 +127,7 @@ class TileWidget(UIWidget):
         ][number]
 
     def render(self):
+        """Draw the tile image and remember it"""
         self.img = pg.Surface((self.tile_size, self.tile_size))
         self.img.fill(COLORS.FARM)
 
@@ -189,6 +200,7 @@ class TileWidget(UIWidget):
         print(f"Rendering tile done: {self.feature_points}")
 
     def _get_real_size(self):
+        """Get the de facto size of the tile on screen (taking zoom into account)"""
         return self.parent.parent.boardZoom * self.tile_size
 
     def draw(self):
@@ -209,6 +221,8 @@ class TileWidget(UIWidget):
 
 
 class InfoWidget(UIWidget):
+    """Widget for displaying information about players"""
+
     def __init__(self, parent, players):
         super().__init__(parent, (0, 0))
         self.instruction = gui.elements.UILabel(
@@ -232,6 +246,8 @@ class InfoWidget(UIWidget):
 
 
 class PlayerWidget(UIWidget):
+    """Widget for displaying information about a single player"""
+
     def __init__(self, parent, player, pos):
         super().__init__(parent, pos)
         self.name = player.name

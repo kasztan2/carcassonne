@@ -15,6 +15,8 @@ class Singleton(type):
 
 
 class GameView(object, metaclass=Singleton):
+    """Manages the whole graphics of the game"""
+
     def __init__(self):
         self.game = None
 

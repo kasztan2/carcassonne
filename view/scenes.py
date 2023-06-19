@@ -23,6 +23,7 @@ class Scene:
         self.clear()
 
     def clear(self):
+        """Draw background on top to clear the screen"""
         x, y = self.parent.screen.get_size()
         self.parent.screen.blit(pg.transform.scale(self.background, (x, y)), (0, 0))
 
@@ -36,10 +37,13 @@ class Scene:
 
     @abstractmethod
     def setup(self):
+        """Setup the scene (for things that cannot be accessed at the start of the program)"""
         pass
 
 
 class WelcomeScene(Scene):
+    """Scene for inputting the number of players and their names"""
+
     def __init__(self, parent):
         super().__init__(parent, Color("chartreuse4"))
         self.welcomeText = TextWidget(
@@ -66,6 +70,7 @@ class WelcomeScene(Scene):
         pg.display.flip()
 
     def validateNumber(self):
+        """Validate the given number of players"""
         if self.numberOfPlayers.get_text() == "":
             return False
 
@@ -76,6 +81,7 @@ class WelcomeScene(Scene):
         return False
 
     def validateNames(self):
+        """Validate the given names of the players (non-empty, unique)"""
         names = []
         for field in self.nameInputs:
             names.append(field.get_text())
@@ -131,6 +137,8 @@ class WelcomeScene(Scene):
 
 
 class GameScene(Scene):
+    """Scene for the actual gameplay"""
+
     def __init__(self, parent):
         super().__init__(parent, Color("blue"))
         self.board = BoardWidget(self, 200)
@@ -197,6 +205,7 @@ class GameScene(Scene):
         self.info_widget = InfoWidget(self, self.parent.game.players)
 
     def handleEnd(self) -> bool:
+        """Handle the game end: tell the game logic and hide ui elements"""
         if not self.parent.game.is_finished():
             return False
 
@@ -268,6 +277,8 @@ class GameScene(Scene):
 
 
 class EndScene(Scene):
+    """Scene for displaying the winners"""
+
     def __init__(self, parent):
         super().__init__(parent, Color("gold"))
         self.top_label = None
