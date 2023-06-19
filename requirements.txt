@@ -1,3 +1,4 @@
-pygame
-pygame_gui
-numpy
+numpy==1.24.2
+pygame==2.4.0
+pygame_ce==2.2.1
+pygame_gui==0.6.9
