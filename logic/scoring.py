@@ -48,6 +48,8 @@ class Scorer(object):
                 players.append(feature.meeple)
 
         counter = Counter(players)
+        if len(counter) == 0:
+            return []
         max_count = counter.most_common(1)[0][1]
 
         output = []
@@ -57,13 +59,28 @@ class Scorer(object):
 
         return output
 
-    def remove_meeples(self, feature: Feature) -> None:
+    def check_any_meeples(self, feature: Feature):
+        features = self.get_connected_features(feature)
+
+        for feature in features:
+            if feature.meeple is not None:
+                return True
+
+        return False
+
+    def remove_meeples(self, feature: Feature) -> set:
+        tiles = set()
         features = self.get_connected_features(feature)
 
         for feature in features:
             if feature.meeple is not None:
                 feature.meeple.plusMeeple()
                 feature.meeple = None
+                tiles.add(feature.parent_tile)
+
+        print(f"tiles: {tiles}")
+
+        return tiles
 
     def calculate_points_for_closed(self, feature: Feature) -> int:
         if not self.check_closed(feature) or feature.type == FEATURE_TYPES.FARM:
@@ -91,9 +108,9 @@ class Scorer(object):
 
         return s
 
-    def score_closed_feature(self, feature: Feature) -> None:
+    def score_closed_feature(self, feature: Feature) -> set:
         if not self.check_closed(feature):
-            return
+            return set()
 
         score = self.calculate_points_for_closed(feature)
         players = self.get_players_on_feature(feature)
@@ -101,4 +118,4 @@ class Scorer(object):
         for player in players:
             player.addScore(score)
 
-        self.remove_meeples(feature)
+        return self.remove_meeples(feature)

@@ -14,7 +14,7 @@ class CarcassonneGame:
     def __init__(
         self, starting_tile: Tile, tileset: Sequence[Tile], players: Sequence[Player]
     ):
-        random.seed(0)
+        random.seed(1)
         self.tileset = copy(tileset)
         random.shuffle(self.tileset)
         self.players = copy(players)
@@ -25,7 +25,7 @@ class CarcassonneGame:
         self.lastTile = None
         self.phase = 0
         self.scorer = Scorer(self)
-        print(self.scorer)
+        self.tilesChanged = set()
 
     def get_current_player_name(self):
         return self.players[self.turn].name
@@ -120,22 +120,30 @@ class CarcassonneGame:
         self.phase = 1
 
     def placeMeeple(self, feature_index: int):
+        self.tilesChanged = set()
+
         if self.phase != 1:
             raise Exception("Can't place meeple while placing a tile")
 
         try:
             # breakpoint()
             if feature_index != -1:
+                feature = self.lastTile.features[feature_index]
+                if self.scorer.check_any_meeples(feature):
+                    raise Exception("Feature already has a meeple")
+
                 self.lastTile.placeMeeple(feature_index, self.players[self.turn])
                 # closing features
                 for feature in self.lastTile.features:
-                    self.scorer.score_closed_feature(feature)
+                    tiles = self.scorer.score_closed_feature(feature)
+                    self.tilesChanged.update(tiles)
             self.next_turn()
             self.phase = 0
         except Exception as e:
-            print("Can't place meeple")
-            print(e)
+            # print("Can't place meeple")
+            # print(e)
             traceback.print_exc()
+            raise Exception("Can't place meeple")
 
     def next_turn(self):
         self.turn += 1

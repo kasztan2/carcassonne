@@ -8,6 +8,7 @@ from view.const import COLORS
 from view.utils import deCornify
 from logic.utils import Coords
 from copy import copy
+import pygame_gui as gui
 
 
 class UIWidget(object):
@@ -119,6 +120,9 @@ class TileWidget(UIWidget):
         self.rect = self.img.get_rect()
 
         self.feature_points = []
+        cloisterOnTile = any(
+            [feature.type == FEATURE_TYPES.CLOISTER for feature in self.tile.features]
+        )
         for feature in self.tile.features:
             conns = feature.connections
             points = []
@@ -163,7 +167,12 @@ class TileWidget(UIWidget):
                 self.feature_points.append(tuple(np.average(points, axis=0)))
             elif feature.type == FEATURE_TYPES.FARM:
                 # already the green background
-                self.feature_points.append(tuple(np.average(points, axis=0)))
+                if cloisterOnTile:
+                    self.feature_points.append(
+                        (1 / 4 * self.tile_size, 1 / 4 * self.tile_size)
+                    )
+                else:
+                    self.feature_points.append(tuple(np.average(points, axis=0)))
             else:
                 raise ValueError("Incorrect feature type")
 
@@ -198,3 +207,44 @@ class TileWidget(UIWidget):
             x + self.coords[0] * realSize - realSize / 2,
             y + self.coords[1] * realSize - realSize / 2,
         )
+
+
+class InfoWidget(UIWidget):
+    def __init__(self, parent, players):
+        super().__init__(parent, (0, 0))
+        self.instruction = gui.elements.UILabel(
+            pg.Rect(0, 0, 200, 50), "Place a tile", self.parent.parent.ui_manager
+        )
+        self.instruction_text = "Place a tile"
+        self.players = [
+            PlayerWidget(self, players[i], (0, i * 50 + 100))
+            for i in range(len(players))
+        ]
+
+    def draw(self):
+        for player in self.players:
+            player.draw()
+
+
+class PlayerWidget(UIWidget):
+    def __init__(self, parent, player, pos):
+        super().__init__(parent, pos)
+        self.name = player.name
+        self.color = player.color
+
+        self.color_rect = None
+        self.label = gui.elements.UILabel(
+            pg.Rect(50, self.pos[1], 150, 50),
+            self.name,
+            self.parent.parent.parent.ui_manager,
+        )
+
+        self.render()
+
+    def render(self):
+        self.color_rect = pg.Surface((50, 50))
+        pg.draw.rect(self.color_rect, self.color, pg.Rect(0, 0, 50, 50))
+
+    def draw(self):
+        screen = self.get_screen()
+        screen.blit(self.color_rect, (0, self.pos[1]))

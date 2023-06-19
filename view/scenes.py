@@ -3,7 +3,7 @@ from pygame.locals import *
 import pygame as pg
 import pygame_gui as gui
 from pygame_gui.elements.ui_text_entry_line import UITextEntryLine
-from view.ui_widgets import TextWidget, BoardWidget, TileWidget
+from view.ui_widgets import TextWidget, BoardWidget, TileWidget, InfoWidget
 from view.utils import alignMousePosition, deCornify
 from logic.game import CarcassonneGame
 from logic.utils import Coords
@@ -136,41 +136,70 @@ class GameScene(Scene):
         self.meeplePointer = -1
 
         self.meeplePointerImage = pg.Surface((20, 20))
+        self.turnPointer = pg.Surface((50, 50))
+        self.turnPointer.fill(Color("blue"))
+        pg.draw.polygon(self.turnPointer, Color("red"), [(10, 25), (40, 10), (40, 40)])
 
     def draw(self):
+        if self.phase == 0:
+            if self.info_widget.instruction_text != "Place a tile":
+                self.clear()
+                self.info_widget.instruction.clear_text_surface()
+                self.info_widget.instruction.set_text("Place a tile")
+                self.info_widget.instruction_text = "Place a tile"
+        else:
+            if self.info_widget.instruction_text != "Place a meeple":
+                self.clear()
+                self.info_widget.instruction.clear_text_surface()
+                self.info_widget.instruction.set_text("Place a meeple")
+                self.info_widget.instruction_text = "Place a meeple"
+
         self.board.draw()
 
         if self.phase == 1 and self.meeplePointer != -1:
             self.meeplePointerImage.fill(self.parent.game.get_current_player_color())
             self.parent.screen.blit(
-                self.meeplePointerImage,
+                pg.transform.scale(
+                    self.meeplePointerImage, (self.boardZoom * 20, self.boardZoom * 20)
+                ),
                 tuple(
                     map(
                         sum,
                         zip(
+                            # self.parent.screen.get_size(),
+                            # np.array(self.board.board[self.board.lastPos].coords) * (self.boardZoom * self.board.tile_size),
                             self.board.board[self.board.lastPos].pos,
-                            deCornify(
-                                self.board.board[self.board.lastPos].feature_points[
-                                    self.meeplePointer
-                                ],
-                                self.board.tile_size,
-                            ),
-                            (-10, -10),
+                            np.array(
+                                deCornify(
+                                    self.board.board[self.board.lastPos].feature_points[
+                                        self.meeplePointer
+                                    ],
+                                    self.board.tile_size,
+                                )
+                            )
+                            * self.boardZoom,
+                            (-10 * self.boardZoom, -10 * self.boardZoom),
                         ),
                     )
                 ),
             )
 
+        self.info_widget.draw()
+        turn = self.parent.game.turn
+        self.parent.screen.blit(self.turnPointer, ((200, 100 + turn * 50)))
+
     def setup(self):
         self.clear()
         self.board.update_tile(self.parent.game.board[Coords(0, 0)], (0, 0))
-        self.label = gui.elements.UILabel(
-            pg.Rect(0, 0, 200, 50),
-            f"Playing now: {self.parent.game.get_current_player_name()}",
-            self.parent.ui_manager,
-        )
+        # self.label = gui.elements.UILabel(
+        #    pg.Rect(0, 0, 200, 50),
+        #    f"Playing now: {self.parent.game.get_current_player_name()}",
+        #    self.parent.ui_manager,
+        # )
         self.phase = 0
         self.board.set_tile_to_place(self.parent.game.get_current_tile())
+
+        self.info_widget = InfoWidget(self, self.parent.game.players)
 
     def process_events(self, event):
         if event.type == VIDEORESIZE:
@@ -221,6 +250,9 @@ class GameScene(Scene):
             elif self.phase == 1:
                 try:
                     self.parent.game.placeMeeple(self.meeplePointer)
+                    tilesChanged = [x.coords for x in self.parent.game.tilesChanged]
+                    for tile in tilesChanged:
+                        self.board.board[tile].render()
                     # self.board.update_tile(self.parent.game.lastTile,
                     self.board.board[self.board.lastPos].render()
                     self.phase = 0
@@ -228,3 +260,4 @@ class GameScene(Scene):
                 except Exception as e:
                     print("Can't place meeple")
                     print(e)
+                    traceback.print_exc()
