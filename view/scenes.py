@@ -196,6 +196,13 @@ class GameScene(Scene):
 
         self.info_widget = InfoWidget(self, self.parent.game.players)
 
+    def handleEnd(self):
+        if not self.parent.game.is_finished():
+            return
+
+        self.info_widget.hide()
+        self.parent.nextScene()
+
     def process_events(self, event):
         if event.type == VIDEORESIZE:
             self.clear()
@@ -254,3 +261,36 @@ class GameScene(Scene):
                     print("Can't place meeple")
                     print(e)
                     traceback.print_exc()
+
+        self.handleEnd()
+
+
+class EndScene(Scene):
+    def __init__(self, parent):
+        super().__init__(parent, Color("gold"))
+        self.top_label = None
+        self.labels = []
+
+    def setup(self):
+        self.clear()
+        self.top_label = gui.elements.UILabel(
+            pg.Rect(200, 100, 400, 50), "Winner(s):", self.parent.ui_manager
+        )
+
+        winners = self.parent.game.get_winners()
+        for i in range(len(winners)):
+            self.labels.append(
+                gui.elements.UILabel(
+                    pg.Rect(200, 200 + i * 100, 400, 50),
+                    winners[i].name,
+                    self.parent.ui_manager,
+                )
+            )
+
+    def draw(self):
+        pass
+
+    def process_events(self, event):
+        if event.type == KEYDOWN:
+            if event.key == K_RETURN:
+                self.parent.running = False

@@ -39,6 +39,17 @@ class CarcassonneGame:
         print(f"Current tile: {self.tileset[-1]}")
         return self.tileset[-1]
 
+    def is_finished(self):
+        return len(self.tileset) == 0
+
+    def get_winners(self):
+        if not self.is_finished():
+            raise Exception("Game has not finished yet")
+
+        max_score = max([player.score for player in self.players])
+
+        return [player for player in self.players if player.score == max_score]
+
     def place_tile(
         self, tile: Tile, coords: Coords | tuple[int, int] | list[int, int]
     ) -> None:

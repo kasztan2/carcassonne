@@ -1,7 +1,7 @@
 import pygame as pg
 from pygame.locals import *
 import pygame_gui as gui
-from view.scenes import WelcomeScene, GameScene
+from view.scenes import WelcomeScene, GameScene, EndScene
 
 
 # singleton magic from stackoverflow: https://stackoverflow.com/questions/6760685/creating-a-singleton-in-python
@@ -26,7 +26,7 @@ class GameView(object, metaclass=Singleton):
         self.clock = pg.time.Clock()
         self.ui_manager = gui.UIManager((800, 800))
 
-        self.scenes = [WelcomeScene(self), GameScene(self)]
+        self.scenes = [WelcomeScene(self), GameScene(self), EndScene(self)]
         self.scene = self.scenes[0]
         self.sceneIndex = 0
         self.scene.setup()

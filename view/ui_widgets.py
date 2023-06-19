@@ -222,6 +222,11 @@ class InfoWidget(UIWidget):
         for player in self.players:
             player.draw()
 
+    def hide(self):
+        self.instruction.hide()
+        for player in self.players:
+            player.hide()
+
 
 class PlayerWidget(UIWidget):
     def __init__(self, parent, player, pos):
@@ -253,3 +258,6 @@ class PlayerWidget(UIWidget):
         screen = self.get_screen()
         self.set_label()
         screen.blit(self.color_rect, (0, self.pos[1]))
+
+    def hide(self):
+        self.label.hide()
