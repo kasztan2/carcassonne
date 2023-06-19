@@ -45,6 +45,9 @@ class Scorer(object):
 
         features = self.get_connected_features(feature)
         # check whether all connected feature objects have the same number of bindings as connections
+        print(
+            f"check_closed on {feature}: {all([len(f.connections) == len(f.bindings) for f in features])}"
+        )
         return all([len(f.connections) == len(f.bindings) for f in features])
 
     def get_players_on_feature(self, feature: Feature) -> Sequence["Player"]:

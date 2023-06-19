@@ -141,9 +141,9 @@ class CarcassonneGame:
 
                 self.lastTile.placeMeeple(feature_index, self.players[self.turn])
                 # closing features
-                for feature in self.lastTile.features:
-                    tiles = self.scorer.score_closed_feature(feature)
-                    self.tilesChanged.update(tiles)
+            for feature in self.lastTile.features:
+                tiles = self.scorer.score_closed_feature(feature)
+                self.tilesChanged.update(tiles)
             self.next_turn()
             self.phase = 0
         except Exception as e:
