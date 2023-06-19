@@ -60,7 +60,7 @@ class BoardWidget(UIWidget):
 
     def update_tile(self, new_tile: Tile, pos: tuple[int, int]):
         self.board[pos] = TileWidget(new_tile, pos, self.tile_size, self)
-        self.lastPos = pos  # self.board[pos]
+        self.lastPos = pos
 
     def draw(self):
         if self.tile_to_place is not None:
@@ -187,10 +187,6 @@ class TileWidget(UIWidget):
 
     def _get_real_size(self):
         return self.parent.parent.boardZoom * self.tile_size
-
-    # def _calc_pos(self):
-    #    realSize=self._get_real_size()
-    #    self.pos=(self.coords[0]*realSize-realSize/2, self.coords[1]*realSize-realSize/2)
 
     def draw(self):
         realSize = self._get_real_size()

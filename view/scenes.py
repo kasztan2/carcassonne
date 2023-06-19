@@ -168,8 +168,6 @@ class GameScene(Scene):
                     map(
                         sum,
                         zip(
-                            # self.parent.screen.get_size(),
-                            # np.array(self.board.board[self.board.lastPos].coords) * (self.boardZoom * self.board.tile_size),
                             self.board.board[self.board.lastPos].pos,
                             np.array(
                                 deCornify(
@@ -193,11 +191,6 @@ class GameScene(Scene):
     def setup(self):
         self.clear()
         self.board.update_tile(self.parent.game.board[Coords(0, 0)], (0, 0))
-        # self.label = gui.elements.UILabel(
-        #    pg.Rect(0, 0, 200, 50),
-        #    f"Playing now: {self.parent.game.get_current_player_name()}",
-        #    self.parent.ui_manager,
-        # )
         self.phase = 0
         self.board.set_tile_to_place(self.parent.game.get_current_tile())
 
@@ -241,7 +234,6 @@ class GameScene(Scene):
                     coords = self.board.tile_to_place.coords
                     self.parent.game.place_tile(self.board.tile_to_place.tile, coords)
                     self.board.update_tile(self.board.tile_to_place.tile, coords)
-                    # self.board.set_tile_to_place(self.parent.game.get_current_tile())
                     self.board.tile_to_place = None
                     self.phase = 1
                     self.meeplePointer = -1
@@ -255,7 +247,6 @@ class GameScene(Scene):
                     tilesChanged = [x.coords for x in self.parent.game.tilesChanged]
                     for tile in tilesChanged:
                         self.board.board[tile.to_tuple()].render()
-                    # self.board.update_tile(self.parent.game.lastTile,
                     self.board.board[self.board.lastPos].render()
                     self.phase = 0
                     self.board.set_tile_to_place(self.parent.game.get_current_tile())

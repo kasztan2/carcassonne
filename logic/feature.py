@@ -38,7 +38,6 @@ class Feature(object):
     def bind(self, feature: "Feature") -> None:
         if feature == self:
             return
-        #    raise ValueError("Feature cannot be bound to itself")
         print(
             f"Binding {self} at {self.parent_tile.coords} to {feature} at {feature.parent_tile.coords}"
         )
@@ -47,6 +46,3 @@ class Feature(object):
     def __repr__(self):
         num_to_str = {1: "City", 2: "PCity", 3: "Road", 4: "Farm", 5: "Cloister"}
         return f"{num_to_str[self.type]}[{','.join([str(x.to_number()) for x in self.connections])}]"
-
-    # def __eq__(self, other):
-    #    return self.uuid == other.uuid

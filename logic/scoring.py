@@ -14,16 +14,8 @@ class Scorer(object):
         visited = [feature]
         toVisit = [feature]
 
-        # print(f"STARTING BFS at {feature.parent_tile.coords}")
-
         while len(toVisit) > 0:
             current = toVisit.pop(0)
-            # breakpoint()
-            # if current in visited:
-            #    continue
-            # visited.append(current)
-
-            # print(f"bfs {current} at {current.parent_tile.coords}")
 
             for neighbor in current.bindings:
                 if neighbor not in visited:

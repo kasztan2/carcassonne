@@ -68,18 +68,11 @@ class CarcassonneGame:
                 neighbor_side = list(
                     reversed(get_side_conn_list(adjacent_tile, invert_side(side)))
                 )
-                # print(f"***\nSide: {side}")
-                # print(f"Checking neighbor at {adjacent_tiles[side]}")
-                # print(my_side, neighbor_side)
-                # print(f"my side number is: {side}")
-                # print(f"neighbor side number is: {invert_side(side)}")
                 for conn in range(3):
                     if my_side[conn] == neighbor_side[conn] or set(
                         [my_side[conn], neighbor_side[conn]]
                     ) == set([1, 2]):
                         continue
-                    # print(f"Wrong neighbor: {adjacent_tile}")
-                    # print(f"I think it is: {self.board[adjacent_tiles[side]]}")
                     raise Exception("Not matching adjacent tile")
 
         if not anyAdjacent:
@@ -116,7 +109,6 @@ class CarcassonneGame:
                     print(f"neighbor feature: {neighbor_features[i]}")
                     my_features[i].bind(neighbor_features[i])
                     neighbor_features[i].bind(my_features[i])
-                    # breakpoint()
 
         self.board[coords] = tile
         self.tileset.pop()
@@ -132,9 +124,7 @@ class CarcassonneGame:
             raise Exception("Can't place meeple while placing a tile")
 
         try:
-            # breakpoint()
             if feature_index != -1:
-                # breakpoint()
                 feature = self.lastTile.features[feature_index]
                 if self.scorer.check_any_meeples(feature):
                     raise Exception("Feature already has a meeple")
@@ -147,8 +137,6 @@ class CarcassonneGame:
             self.next_turn()
             self.phase = 0
         except Exception as e:
-            # print("Can't place meeple")
-            # print(e)
             traceback.print_exc()
             raise Exception("Can't place meeple")
 
@@ -219,8 +207,6 @@ class CarcassonneGame:
         colors = copy(PLAYER_COLORS)
         for name in playerNames:
             players.append(Player(name, colors.pop()))
-
-        # startingTile.coords = Coords(0, 0)
 
         obj = cls(startingTile, tileset, players)
 
