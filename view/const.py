@@ -8,3 +8,5 @@ COLORS = namedtuple("COLORS", ["FARM", "ROAD", "CITY", "PENNANT_CITY", "CLOISTER
     Color("darkblue"),
     Color("gold"),
 )
+
+FONT_SIZE = 40

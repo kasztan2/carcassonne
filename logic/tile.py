@@ -19,6 +19,7 @@ class Tile(object):
     def ensureCorrect(self) -> None:
         conns = set()
         for feature in self.features:
+            feature.parent_tile = self
             for conn in feature.connections:
                 if conn in conns:
                     raise AssertionError("Duplicate connection in a tile")

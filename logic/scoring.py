@@ -11,26 +11,33 @@ class Scorer(object):
         self.parent = parent
 
     def get_connected_features(self, feature: Feature) -> Sequence[Feature]:
-        visited = []
+        visited = [feature]
         toVisit = [feature]
 
-        print(f"STARTING BFS at {feature.parent_tile.coords}")
+        # print(f"STARTING BFS at {feature.parent_tile.coords}")
 
         while len(toVisit) > 0:
             current = toVisit.pop(0)
-            if current in visited:
-                continue
-            visited.append(current)
+            # breakpoint()
+            # if current in visited:
+            #    continue
+            # visited.append(current)
 
-            print(f"bfs {current} at {current.parent_tile.coords}")
+            # print(f"bfs {current} at {current.parent_tile.coords}")
 
             for neighbor in current.bindings:
                 if neighbor not in visited:
+                    visited.append(neighbor)
                     toVisit.append(neighbor)
+
+        print(f"bfs output: {visited}")
 
         return visited
 
     def check_closed(self, feature: Feature) -> bool:
+        if feature.type == FEATURE_TYPES.FARM:
+            return False
+
         if feature.type == FEATURE_TYPES.CLOISTER:
             coords = feature.parent_tile.coords
             around = coords.get_coords_around()
@@ -63,6 +70,9 @@ class Scorer(object):
 
     def check_any_meeples(self, feature: Feature):
         features = self.get_connected_features(feature)
+
+        print("check any meeples:")
+        print([feature.parent_tile.coords for feature in features])
 
         for feature in features:
             if feature.meeple is not None:

@@ -215,6 +215,7 @@ class InfoWidget(UIWidget):
         self.instruction = gui.elements.UILabel(
             pg.Rect(0, 0, 200, 50), "Place a tile", self.parent.parent.ui_manager
         )
+        self.instruction.set_text_scale(2)
         self.instruction_text = "Place a tile"
         self.players = [
             PlayerWidget(self, players[i], (0, i * 50 + 100))
@@ -231,15 +232,22 @@ class PlayerWidget(UIWidget):
         super().__init__(parent, pos)
         self.name = player.name
         self.color = player.color
+        self.player = player
 
         self.color_rect = None
         self.label = gui.elements.UILabel(
             pg.Rect(50, self.pos[1], 150, 50),
-            self.name,
+            f"{self.name} | {self.player.meeplesLeft} | {self.player.score}",
             self.parent.parent.parent.ui_manager,
         )
+        self.label.set_text_scale(2)
 
         self.render()
+
+    def set_label(self):
+        self.label.set_text(
+            f"{self.name} | {self.player.meeplesLeft} | {self.player.score}"
+        )
 
     def render(self):
         self.color_rect = pg.Surface((50, 50))
@@ -247,4 +255,5 @@ class PlayerWidget(UIWidget):
 
     def draw(self):
         screen = self.get_screen()
+        self.set_label()
         screen.blit(self.color_rect, (0, self.pos[1]))

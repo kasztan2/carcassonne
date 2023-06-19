@@ -21,6 +21,8 @@ class CarcassonneGame:
         random.shuffle(self.players)
         self.turn = 0
         self.board = dict()
+        starting_tile.coords = Coords(0, 0)
+        starting_tile.ensureCorrect()
         self.board[Coords(0, 0)] = starting_tile
         self.lastTile = None
         self.phase = 0
@@ -83,6 +85,8 @@ class CarcassonneGame:
         if not anyAdjacent:
             raise Exception("No adjacent tile")
 
+        tile.coords = coords
+
         for side in sides:
             if adjacent_tiles[side] in self.board.keys():
                 adjacent_tile = self.board[adjacent_tiles[side]]
@@ -101,6 +105,9 @@ class CarcassonneGame:
                     )
                 )
 
+                tile.ensureCorrect()
+                adjacent_tile.ensureCorrect()
+
                 print(f"my tile: {my_features}")
                 print(f"adjacent tile: {neighbor_features}")
 
@@ -109,8 +116,7 @@ class CarcassonneGame:
                     print(f"neighbor feature: {neighbor_features[i]}")
                     my_features[i].bind(neighbor_features[i])
                     neighbor_features[i].bind(my_features[i])
-
-        tile.coords = coords
+                    # breakpoint()
 
         self.board[coords] = tile
         self.tileset.pop()
@@ -128,6 +134,7 @@ class CarcassonneGame:
         try:
             # breakpoint()
             if feature_index != -1:
+                # breakpoint()
                 feature = self.lastTile.features[feature_index]
                 if self.scorer.check_any_meeples(feature):
                     raise Exception("Feature already has a meeple")
@@ -212,6 +219,8 @@ class CarcassonneGame:
         colors = copy(PLAYER_COLORS)
         for name in playerNames:
             players.append(Player(name, colors.pop()))
+
+        # startingTile.coords = Coords(0, 0)
 
         obj = cls(startingTile, tileset, players)
 

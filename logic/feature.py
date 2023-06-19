@@ -48,5 +48,5 @@ class Feature(object):
         num_to_str = {1: "City", 2: "PCity", 3: "Road", 4: "Farm", 5: "Cloister"}
         return f"{num_to_str[self.type]}[{','.join([str(x.to_number()) for x in self.connections])}]"
 
-    def __eq__(self, other):
-        return self.uuid == other.uuid
+    # def __eq__(self, other):
+    #    return self.uuid == other.uuid

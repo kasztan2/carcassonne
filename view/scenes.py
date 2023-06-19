@@ -5,6 +5,7 @@ import pygame_gui as gui
 from pygame_gui.elements.ui_text_entry_line import UITextEntryLine
 from view.ui_widgets import TextWidget, BoardWidget, TileWidget, InfoWidget
 from view.utils import alignMousePosition, deCornify
+from view.const import FONT_SIZE
 from logic.game import CarcassonneGame
 from logic.utils import Coords
 import numpy as np
@@ -50,6 +51,7 @@ class WelcomeScene(Scene):
             "Enter the number of players (submit using enter)",
             self.parent.ui_manager,
         )
+        self.label.set_text_scale(5)
         self.numberOfPlayers = UITextEntryLine(
             relative_rect=pg.rect.Rect(200, 200, 400, 50),
             manager=self.parent.ui_manager,

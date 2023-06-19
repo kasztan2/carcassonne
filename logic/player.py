@@ -9,7 +9,7 @@ class Player(object):
         self.meeplesLeft = STARTING_MEEPLE_COUNT
 
     def addScore(self, score_to_add: int) -> None:
-        if score_to_add <= 0:
+        if score_to_add < 0:
             raise ValueError("Score to be added must be positive")
 
         self.score += score_to_add
