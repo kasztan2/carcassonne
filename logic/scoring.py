@@ -11,16 +11,18 @@ class Scorer(object):
         self.parent = parent
 
     def get_connected_features(self, feature: Feature) -> Sequence[Feature]:
-        visited = [feature]
-        toVisit = []
-        toVisit.extend(feature.bindings)
+        visited = []
+        toVisit = [feature]
+
+        print(f"STARTING BFS at {feature.parent_tile.coords}")
 
         while len(toVisit) > 0:
             current = toVisit.pop(0)
-            visited.append(current)
-            print(f"bfs {current}")
             if current in visited:
                 continue
+            visited.append(current)
+
+            print(f"bfs {current} at {current.parent_tile.coords}")
 
             for neighbor in current.bindings:
                 if neighbor not in visited:
