@@ -1,7 +1,10 @@
 from logic.const import *
 from logic.feature import Connection
-from typing import Sequence
+from typing import TYPE_CHECKING, Sequence
 from itertools import product
+
+if TYPE_CHECKING:
+    from logic.feature import Feature
 
 
 def invert_side(side: int) -> int:
@@ -19,6 +22,22 @@ def get_side_conn_list(tile, side) -> list:
 
 def parse_connection_number(connection_number: int) -> Connection:
     return Connection(connection_number // 3, connection_number % 3)
+
+
+def is_nearby_connection(conn1, conn2) -> bool:
+    n1 = conn1.to_number()
+    n2 = conn2.to_number()
+    return abs(n1 - n2) == 1 or set([n1, n2]) == set([0, 12])
+
+
+def is_nearby_feature(f1: "Feature", f2: "Feature") -> bool:
+    conns1 = f1.connections
+    conns2 = f2.connections
+    for conn1, conn2 in product(conns1, conns2):
+        if is_nearby_connection(conn1, conn2):
+            return True
+
+    return False
 
 
 class Coords(object):

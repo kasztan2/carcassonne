@@ -196,12 +196,14 @@ class GameScene(Scene):
 
         self.info_widget = InfoWidget(self, self.parent.game.players)
 
-    def handleEnd(self):
+    def handleEnd(self) -> bool:
         if not self.parent.game.is_finished():
-            return
+            return False
 
+        self.parent.game.handleEnd()
         self.info_widget.hide()
         self.parent.nextScene()
+        return True
 
     def process_events(self, event):
         if event.type == VIDEORESIZE:
@@ -255,14 +257,14 @@ class GameScene(Scene):
                     for tile in tilesChanged:
                         self.board.board[tile.to_tuple()].render()
                     self.board.board[self.board.lastPos].render()
+                    if self.handleEnd():
+                        return
                     self.phase = 0
                     self.board.set_tile_to_place(self.parent.game.get_current_tile())
                 except Exception as e:
                     print("Can't place meeple")
                     print(e)
                     traceback.print_exc()
-
-        self.handleEnd()
 
 
 class EndScene(Scene):
@@ -282,7 +284,7 @@ class EndScene(Scene):
             self.labels.append(
                 gui.elements.UILabel(
                     pg.Rect(200, 200 + i * 100, 400, 50),
-                    winners[i].name,
+                    f"{winners[i].name} with {winners[i].score} points",
                     self.parent.ui_manager,
                 )
             )

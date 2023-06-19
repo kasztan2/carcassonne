@@ -155,6 +155,16 @@ class CarcassonneGame:
         self.turn += 1
         self.turn %= len(self.players)
 
+    def handleEnd(self):
+        if not self.is_finished():
+            raise Exception(
+                "Can't handle the end of game while it is still in progress"
+            )
+
+        for tile in self.board.values():
+            for feature in tile.features:
+                self.scorer.score_open_feature(feature)
+
     @staticmethod
     def parseFeatureText(feature: str) -> Feature:
         def parseConnections(t: str):

@@ -32,6 +32,7 @@ class Feature(object):
         self.uuid = uuid.uuid4()
         self.bindings = []
         self.parent_tile = None
+        self.scored = False
 
     def rotate(self, times: int) -> None:
         for i in range(times % 4):

@@ -2,6 +2,7 @@ from logic.feature import Feature
 from typing import TYPE_CHECKING, Sequence
 from logic.const import FEATURE_TYPES
 from collections import Counter
+from logic.utils import is_nearby_feature
 
 if TYPE_CHECKING:
     from logic.player import Player
@@ -100,6 +101,7 @@ class Scorer(object):
         s = 0
 
         for feature in features:
+            feature.scored = True
             if feature.parent_tile in tiles:
                 continue
 
@@ -116,11 +118,80 @@ class Scorer(object):
 
         return s
 
+    def get_city_features_near(self, farm_feature: Feature) -> list:
+        tile = farm_feature.parent_tile
+        return [
+            feature
+            for feature in tile.features
+            if is_nearby_feature(farm_feature, feature)
+        ]
+
+    def count_closed_cities_near_farm(self, feature: Feature) -> int:
+        features = self.get_connected_features(feature)
+        visited_cities = set()
+
+        for feature in features:
+            feature.scored = True
+            cities = [
+                frozenset(self.get_connected_features(f))
+                for f in self.get_city_features_near(feature)
+            ]
+            visited_cities.update(cities)
+
+        return len(visited_cities)
+
+    def calculate_points_for_open(self, feature: Feature) -> int:
+        if self.check_closed(feature) or feature.scored:
+            return 0
+        features = self.get_connected_features(feature)
+
+        tiles = set()
+
+        s = 0
+
+        if feature.type == FEATURE_TYPES.CLOISTER:
+            coords = feature.parent_tile.coords
+            around = coords.get_coords_around()
+            return sum([x in self.parent.board.keys() for x in around])
+
+        if feature.type == FEATURE_TYPES.FARM:
+            return 3 * self.count_closed_cities_near_farm(feature)
+
+        for feature in features:
+            if feature.scored:
+                return 0
+            feature.scored = True
+            if feature.parent_tile in tiles:
+                continue
+
+            if feature.type == FEATURE_TYPES.CITY:
+                s += 1
+            elif feature.type == FEATURE_TYPES.PENNANT_CITY:
+                s += 2
+            elif feature.type == FEATURE_TYPES.ROAD:
+                s += 1
+            else:
+                raise ValueError("Unknown feature type")
+
+        return s
+
     def score_closed_feature(self, feature: Feature) -> set:
         if not self.check_closed(feature):
             return set()
 
         score = self.calculate_points_for_closed(feature)
+        players = self.get_players_on_feature(feature)
+
+        for player in players:
+            player.addScore(score)
+
+        return self.remove_meeples(feature)
+
+    def score_open_feature(self, feature: Feature) -> None:
+        if self.check_closed(feature) or feature.scored:
+            return
+
+        score = self.calculate_points_for_open(feature)
         players = self.get_players_on_feature(feature)
 
         for player in players:
