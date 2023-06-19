@@ -13,6 +13,9 @@ class Scorer(object):
         self.parent = parent
 
     def get_connected_features(self, feature: Feature) -> Sequence[Feature]:
+        """
+        Get all features that can be reached from a given feature (including itself)
+        """
         visited = [feature]
         toVisit = [feature]
 
@@ -29,6 +32,7 @@ class Scorer(object):
         return visited
 
     def check_closed(self, feature: Feature) -> bool:
+        """Check whether the feature is closed"""
         if feature.type == FEATURE_TYPES.FARM:
             return False
 
@@ -45,7 +49,7 @@ class Scorer(object):
         return all([len(f.connections) == len(f.bindings) for f in features])
 
     def get_players_on_feature(self, feature: Feature) -> Sequence["Player"]:
-        """Get winning players on a given feature"""
+        """Get winning players on a given feature (with most meeples)"""
         features = self.get_connected_features(feature)
 
         players = []
@@ -66,6 +70,7 @@ class Scorer(object):
         return output
 
     def check_any_meeples(self, feature: Feature):
+        """Check if there are any meeples on the feature"""
         features = self.get_connected_features(feature)
 
         print("check any meeples:")
@@ -78,6 +83,7 @@ class Scorer(object):
         return False
 
     def remove_meeples(self, feature: Feature) -> set:
+        """Return meeples to their owners when a feature is completed"""
         tiles = set()
         features = self.get_connected_features(feature)
 
@@ -92,6 +98,7 @@ class Scorer(object):
         return tiles
 
     def calculate_points_for_closed(self, feature: Feature) -> int:
+        """Calculate points for a closed feature (returns 0 for open features)"""
         if not self.check_closed(feature) or feature.type == FEATURE_TYPES.FARM:
             return 0
         features = self.get_connected_features(feature)
@@ -119,6 +126,7 @@ class Scorer(object):
         return s
 
     def get_city_features_near(self, farm_feature: Feature) -> list:
+        """Get city features on the same tile that are touching the given feature (farm)"""
         tile = farm_feature.parent_tile
         return [
             feature
@@ -127,6 +135,7 @@ class Scorer(object):
         ]
 
     def count_closed_cities_near_farm(self, feature: Feature) -> int:
+        """Counts the number of cities touching the farm"""
         features = self.get_connected_features(feature)
         visited_cities = set()
 
@@ -141,6 +150,7 @@ class Scorer(object):
         return len(visited_cities)
 
     def calculate_points_for_open(self, feature: Feature) -> int:
+        """Calculates the points for an open feature (returns 0 for a closed feature)"""
         if self.check_closed(feature) or feature.scored:
             return 0
         features = self.get_connected_features(feature)
@@ -176,6 +186,7 @@ class Scorer(object):
         return s
 
     def score_closed_feature(self, feature: Feature) -> set:
+        """Calculate points for closed feature -> update scores -> remove meeples"""
         if not self.check_closed(feature):
             return set()
 
@@ -188,6 +199,7 @@ class Scorer(object):
         return self.remove_meeples(feature)
 
     def score_open_feature(self, feature: Feature) -> None:
+        """Calculate points for open features -> update scores -> remove meeples (just in case)"""
         if self.check_closed(feature) or feature.scored:
             return
 

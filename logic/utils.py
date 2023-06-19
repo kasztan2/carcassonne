@@ -8,10 +8,12 @@ if TYPE_CHECKING:
 
 
 def invert_side(side: int) -> int:
+    """Convert a side to its opposite (left-right, top-bottom)"""
     return (side + 2) % 4
 
 
 def get_side_conn_list(tile, side) -> list:
+    """Get a list of feature types with connections on the given side of the given tile (used for checking if a tile can be placed)"""
     output = {}
     for feature in tile.features:
         for conn in feature.connections:
@@ -21,16 +23,19 @@ def get_side_conn_list(tile, side) -> list:
 
 
 def parse_connection_number(connection_number: int) -> Connection:
+    """Make a Connection object out of a number from 0 to 11"""
     return Connection(connection_number // 3, connection_number % 3)
 
 
 def is_nearby_connection(conn1, conn2) -> bool:
+    """Check if feature with `conn1` connection is touching a feature with `conn2` connection"""
     n1 = conn1.to_number()
     n2 = conn2.to_number()
     return abs(n1 - n2) == 1 or set([n1, n2]) == set([0, 12])
 
 
 def is_nearby_feature(f1: "Feature", f2: "Feature") -> bool:
+    """Check if two features are touching each other"""
     conns1 = f1.connections
     conns2 = f2.connections
     for conn1, conn2 in product(conns1, conns2):
@@ -61,6 +66,7 @@ class Coords(object):
         ]
 
     def to_tuple(self) -> tuple:
+        """Returns a tuple representation (x, y)"""
         return (self.x, self.y)
 
     def __eq__(self, __value: object) -> bool:
