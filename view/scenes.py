@@ -241,7 +241,7 @@ class GameScene(Scene):
 
                 try:
                     coords = self.board.tile_to_place.coords
-                    self.parent.game.place_tile(self.board.tile_to_place.tile, coords)
+                    self.parent.game.place_tile(coords)
                     self.board.update_tile(self.board.tile_to_place.tile, coords)
                     self.board.tile_to_place = None
                     self.phase = 1

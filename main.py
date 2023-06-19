@@ -1,4 +1,3 @@
-from logic import CarcassonneGame
 from view.game import GameView
 
 

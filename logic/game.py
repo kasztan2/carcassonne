@@ -75,9 +75,15 @@ class CarcassonneGame:
 
         return [player for player in self.players if player.score == max_score]
 
-    def place_tile(
-        self, tile: Tile, coords: Coords | tuple[int, int] | list[int, int]
-    ) -> None:
+    def place_tile(self, coords: Coords | tuple[int, int] | list[int, int]) -> None:
+        """
+        Place a tile
+
+        Parameters
+        ----------
+        coords : Coords | tuple[int, int] | list[int, int]
+            Coords to place the tile on
+        """
         if self.phase != 0:
             raise Exception("Can't place tile while placing a meeple")
 
@@ -154,6 +160,14 @@ class CarcassonneGame:
         self.phase = 1
 
     def placeMeeple(self, feature_index: int):
+        """
+        Place a meeple
+
+        Parameters
+        ----------
+        feature_index : int
+            Index of the feature on the tile to place the meeple on
+        """
         self.tilesChanged = set()
 
         if self.phase != 1:
@@ -177,10 +191,16 @@ class CarcassonneGame:
             raise Exception("Can't place meeple")
 
     def next_turn(self):
+        """
+        Go to the next turn
+        """
         self.turn += 1
         self.turn %= len(self.players)
 
     def handleEnd(self):
+        """
+        Score open features at the end of the game
+        """
         if not self.is_finished():
             raise Exception(
                 "Can't handle the end of game while it is still in progress"
@@ -192,6 +212,15 @@ class CarcassonneGame:
 
     @staticmethod
     def parseFeatureText(feature: str) -> Feature:
+        """
+        Helper function to parse a single feature from a string
+
+        Parameters
+        ----------
+        feature : str
+            String of the feature to parse
+        """
+
         def parseConnections(t: str):
             return [parse_connection_number(int(x)) for x in t.split(",")]
 
@@ -210,6 +239,16 @@ class CarcassonneGame:
 
     @classmethod
     def from_file_and_names(cls, filename: str, playerNames: Sequence[str]):
+        """
+        Creates a new instance of CarcassonneGame from a given tileset file and names of the players
+
+        Parameters
+        ----------
+        filename : str
+            Filename of the file to read the tileset from
+        playerNames: Sequence[str]
+            Names of the players
+        """
         tileset = []
         startingTile = None
 
