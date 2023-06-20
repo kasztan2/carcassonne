@@ -1,4 +1,7 @@
-The built documentation is in folder "docs"
+# Documentation
+The pre-built documentation is in folder "docs"
 
-Game is controlled using mouse and keys: return, r, tab
-
+# Game controls
+`return` - submit form / end program at the end
+`r` - rotate tile
+`tab` - change meeple position
