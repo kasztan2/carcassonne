@@ -69,7 +69,7 @@ class Scorer(object):
 
         return output
 
-    def check_any_meeples(self, feature: Feature):
+    def check_any_meeples(self, feature: Feature) -> bool:
         """Check if there are any meeples on the feature"""
         features = self.get_connected_features(feature)
 

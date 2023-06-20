@@ -30,14 +30,14 @@ class Player(object):
 
         self.score += score_to_add
 
-    def minusMeeple(self):
+    def minusMeeple(self) -> None:
         """Subtract one meeple when placing it on the board"""
         if self.meeplesLeft == 0:
             raise Exception("Cannot place a meeple: no meeples left")
 
         self.meeplesLeft -= 1
 
-    def plusMeeple(self):
+    def plusMeeple(self) -> None:
         """Add one meeple when a feature is completed"""
         if self.meeplesLeft == STARTING_MEEPLE_COUNT:
             raise Exception("How come you return a meeple that was not placed?")

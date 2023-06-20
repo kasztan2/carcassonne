@@ -17,19 +17,19 @@ if TYPE_CHECKING:
 class UIWidget(object):
     """Abstract class for custom UI widgets"""
 
-    def __init__(self, parent: "Scene", pos: tuple[int, int]):
+    def __init__(self, parent: "Scene", pos: tuple[int, int]) -> None:
         self.parent = parent
         self.pos = pos
 
     @abstractmethod
-    def draw(self):
+    def draw(self) -> None:
         pass
 
     def get_screen(self):
         """Get the screen that this feature should be drawn on"""
         return self.parent.parent.parent.screen
 
-    def on_resize(self):
+    def on_resize(self) -> None:
         """Adjust to the new size of the screen"""
         pass
 
@@ -45,35 +45,35 @@ class TextWidget(UIWidget):
         fontsize: int,
         pos: tuple[int, int],
         color: tuple[int, int, int],
-    ):
+    ) -> None:
         super().__init__(parent, pos)
         self.font = pg.font.Font(None, fontsize)
         self.img = self.font.render(text, True, color)
         self.rect = self.img.get_rect()
         self.rect.topleft = self.pos
 
-    def draw(self):
+    def draw(self) -> None:
         self.parent.parent.screen.blit(self.img, self.rect)
 
 
 class BoardWidget(UIWidget):
     """Widget containing tiles on the board and handling the placing of tiles and meeples (basically coordinating the Tile widgets)"""
 
-    def __init__(self, parent: "Scene", tile_size: int):
+    def __init__(self, parent: "Scene", tile_size: int) -> None:
         super().__init__(parent, (0, 0))
         self.board = dict()
         self.tile_size = tile_size
         self.tile_to_place = None
         self.lastPos = (0, 0)
 
-    def set_tile_to_place(self, tile_to_place):
+    def set_tile_to_place(self, tile_to_place) -> None:
         self.tile_to_place = TileWidget(tile_to_place, (0, 0), self.tile_size, self)
 
-    def update_tile(self, new_tile: Tile, pos: tuple[int, int]):
+    def update_tile(self, new_tile: Tile, pos: tuple[int, int]) -> None:
         self.board[pos] = TileWidget(new_tile, pos, self.tile_size, self)
         self.lastPos = pos
 
-    def draw(self):
+    def draw(self) -> None:
         if self.tile_to_place is not None:
             self.parent.clear()
 
@@ -83,19 +83,19 @@ class BoardWidget(UIWidget):
         if self.tile_to_place is not None:
             self.tile_to_place.draw()
 
-    def on_resize(self):
+    def on_resize(self) -> None:
         self.parent.clear()
         for tile in self.board.values():
             tile.on_resize()
 
-    def _get_real_size(self):
+    def _get_real_size(self) -> float:
         return self.parent.boardZoom * self.tile_size
 
 
 class TileWidget(UIWidget):
     """Tile widget"""
 
-    def __init__(self, tile, pos, size, parent):
+    def __init__(self, tile, pos, size, parent) -> None:
         super().__init__(parent, (pos[0] * size - size / 2, pos[1] * size - size / 2))
         self.tile = tile
         self.tile_size = size
@@ -106,7 +106,7 @@ class TileWidget(UIWidget):
         self.render()
         self.on_resize()
 
-    def _connection_pos(self, conn):
+    def _connection_pos(self, conn) -> tuple:
         number = conn.to_number()
         return [
             (x * self.tile_size, y * self.tile_size)
@@ -126,7 +126,7 @@ class TileWidget(UIWidget):
             ]
         ][number]
 
-    def render(self):
+    def render(self) -> None:
         """Draw the tile image and remember it"""
         self.img = pg.Surface((self.tile_size, self.tile_size))
         self.img.fill(COLORS.FARM)
@@ -199,17 +199,17 @@ class TileWidget(UIWidget):
 
         print(f"Rendering tile done: {self.feature_points}")
 
-    def _get_real_size(self):
+    def _get_real_size(self) -> float:
         """Get the de facto size of the tile on screen (taking zoom into account)"""
         return self.parent.parent.boardZoom * self.tile_size
 
-    def draw(self):
+    def draw(self) -> None:
         realSize = self._get_real_size()
         self.get_screen().blit(
             pg.transform.scale(self.img, (realSize, realSize)), self.pos
         )
 
-    def on_resize(self):
+    def on_resize(self) -> None:
         x, y = self.get_screen().get_size()
         x /= 2
         y /= 2
@@ -223,7 +223,7 @@ class TileWidget(UIWidget):
 class InfoWidget(UIWidget):
     """Widget for displaying information about players"""
 
-    def __init__(self, parent, players):
+    def __init__(self, parent, players) -> None:
         super().__init__(parent, (0, 0))
         self.instruction = gui.elements.UILabel(
             pg.Rect(0, 0, 200, 50), "Place a tile", self.parent.parent.ui_manager
@@ -235,11 +235,11 @@ class InfoWidget(UIWidget):
             for i in range(len(players))
         ]
 
-    def draw(self):
+    def draw(self) -> None:
         for player in self.players:
             player.draw()
 
-    def hide(self):
+    def hide(self) -> None:
         self.instruction.hide()
         for player in self.players:
             player.hide()
@@ -248,7 +248,7 @@ class InfoWidget(UIWidget):
 class PlayerWidget(UIWidget):
     """Widget for displaying information about a single player"""
 
-    def __init__(self, parent, player, pos):
+    def __init__(self, parent, player, pos) -> None:
         super().__init__(parent, pos)
         self.name = player.name
         self.color = player.color
@@ -264,19 +264,19 @@ class PlayerWidget(UIWidget):
 
         self.render()
 
-    def set_label(self):
+    def set_label(self) -> None:
         self.label.set_text(
             f"{self.name} | {self.player.meeplesLeft} | {self.player.score}"
         )
 
-    def render(self):
+    def render(self) -> None:
         self.color_rect = pg.Surface((50, 50))
         pg.draw.rect(self.color_rect, self.color, pg.Rect(0, 0, 50, 50))
 
-    def draw(self):
+    def draw(self) -> None:
         screen = self.get_screen()
         self.set_label()
         screen.blit(self.color_rect, (0, self.pos[1]))
 
-    def hide(self):
+    def hide(self) -> None:
         self.label.hide()

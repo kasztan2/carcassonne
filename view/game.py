@@ -7,7 +7,7 @@ from view.scenes import WelcomeScene, GameScene, EndScene
 class GameView(object):
     """Manages the whole graphics of the game"""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.game = None
 
         pg.init()
@@ -23,7 +23,7 @@ class GameView(object):
         self.sceneIndex = 0
         self.scene.setup()
 
-    def run(self):
+    def run(self) -> None:
         time_delta = self.clock.tick(60) / 1000.0
         while self.running:
             for event in pg.event.get():
@@ -41,7 +41,7 @@ class GameView(object):
 
         pg.quit()
 
-    def nextScene(self):
+    def nextScene(self) -> None:
         self.sceneIndex += 1
         if self.sceneIndex >= len(self.scenes):
             raise Exception("scene index out of range")

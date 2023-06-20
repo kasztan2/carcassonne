@@ -38,8 +38,7 @@ class CarcassonneGame:
 
     def __init__(
         self, starting_tile: Tile, tileset: Sequence[Tile], players: Sequence[Player]
-    ):
-        random.seed(1)
+    ) -> None:
         self.tileset = copy(tileset)
         random.shuffle(self.tileset)
         self.players = copy(players)
@@ -54,20 +53,20 @@ class CarcassonneGame:
         self.scorer = Scorer(self)
         self.tilesChanged = set()
 
-    def get_current_player_name(self):
+    def get_current_player_name(self) -> str:
         return self.players[self.turn].name
 
-    def get_current_player_color(self):
+    def get_current_player_color(self) -> tuple:
         return self.players[self.turn].color
 
-    def get_current_tile(self):
+    def get_current_tile(self) -> Tile:
         print(f"Current tile: {self.tileset[-1]}")
         return self.tileset[-1]
 
-    def is_finished(self):
+    def is_finished(self) -> bool:
         return len(self.tileset) == 0
 
-    def get_winners(self):
+    def get_winners(self) -> list:
         if not self.is_finished():
             raise Exception("Game has not finished yet")
 
@@ -159,7 +158,7 @@ class CarcassonneGame:
 
         self.phase = 1
 
-    def placeMeeple(self, feature_index: int):
+    def placeMeeple(self, feature_index: int) -> None:
         """
         Place a meeple
 
@@ -190,14 +189,14 @@ class CarcassonneGame:
             traceback.print_exc()
             raise Exception("Can't place meeple")
 
-    def next_turn(self):
+    def next_turn(self) -> None:
         """
         Go to the next turn
         """
         self.turn += 1
         self.turn %= len(self.players)
 
-    def handleEnd(self):
+    def handleEnd(self) -> None:
         """
         Score open features at the end of the game
         """

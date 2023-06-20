@@ -13,7 +13,7 @@ import traceback
 
 
 class Scene:
-    def __init__(self, parent, background_color):
+    def __init__(self, parent, background_color) -> None:
         self.parent = parent
         self.background_color = background_color
         x, y = self.parent.screen.get_size()
@@ -22,21 +22,21 @@ class Scene:
 
         self.clear()
 
-    def clear(self):
+    def clear(self) -> None:
         """Draw background on top to clear the screen"""
         x, y = self.parent.screen.get_size()
         self.parent.screen.blit(pg.transform.scale(self.background, (x, y)), (0, 0))
 
     @abstractmethod
-    def draw(self):
+    def draw(self) -> None:
         pass
 
     @abstractmethod
-    def process_events(self, event):
+    def process_events(self, event) -> None:
         pass
 
     @abstractmethod
-    def setup(self):
+    def setup(self) -> None:
         """Setup the scene (for things that cannot be accessed at the start of the program)"""
         pass
 
@@ -44,7 +44,7 @@ class Scene:
 class WelcomeScene(Scene):
     """Scene for inputting the number of players and their names"""
 
-    def __init__(self, parent):
+    def __init__(self, parent) -> None:
         super().__init__(parent, Color("chartreuse4"))
         self.welcomeText = TextWidget(
             self, "Welcome to the Carcassonne Game!", 50, (0, 0), (0, 0, 0)
@@ -64,12 +64,12 @@ class WelcomeScene(Scene):
         self.data = {"numPlayers": 0, "names": []}
         self.phase = 0
 
-    def draw(self):
+    def draw(self) -> None:
         self.welcomeText.draw()
 
         pg.display.flip()
 
-    def validateNumber(self):
+    def validateNumber(self) -> bool:
         """Validate the given number of players"""
         if self.numberOfPlayers.get_text() == "":
             return False
@@ -80,7 +80,7 @@ class WelcomeScene(Scene):
 
         return False
 
-    def validateNames(self):
+    def validateNames(self) -> bool:
         """Validate the given names of the players (non-empty, unique)"""
         names = []
         for field in self.nameInputs:
@@ -94,7 +94,7 @@ class WelcomeScene(Scene):
 
         return True
 
-    def process_events(self, event):
+    def process_events(self, event) -> None:
         if event.type == VIDEORESIZE:
             self.clear()
         elif event.type == KEYDOWN:
@@ -132,14 +132,14 @@ class WelcomeScene(Scene):
                     self.label.hide()
                     self.parent.nextScene()
 
-    def setup(self):
+    def setup(self) -> None:
         self.clear()
 
 
 class GameScene(Scene):
     """Scene for the actual gameplay"""
 
-    def __init__(self, parent):
+    def __init__(self, parent) -> None:
         super().__init__(parent, Color("blue"))
         self.board = BoardWidget(self, 200)
         self.boardZoom = 1.0
@@ -150,7 +150,7 @@ class GameScene(Scene):
         self.turnPointer.fill(Color("blue"))
         pg.draw.polygon(self.turnPointer, Color("red"), [(10, 25), (40, 10), (40, 40)])
 
-    def draw(self):
+    def draw(self) -> None:
         if self.phase == 0:
             if self.info_widget.instruction_text != "Place a tile":
                 self.clear()
@@ -196,7 +196,7 @@ class GameScene(Scene):
         turn = self.parent.game.turn
         self.parent.screen.blit(self.turnPointer, ((200, 100 + turn * 50)))
 
-    def setup(self):
+    def setup(self) -> None:
         self.clear()
         self.board.update_tile(self.parent.game.board[Coords(0, 0)], (0, 0))
         self.phase = 0
@@ -214,7 +214,7 @@ class GameScene(Scene):
         self.parent.nextScene()
         return True
 
-    def process_events(self, event):
+    def process_events(self, event) -> None:
         if event.type == VIDEORESIZE:
             self.clear()
             self.board.on_resize()
@@ -279,12 +279,12 @@ class GameScene(Scene):
 class EndScene(Scene):
     """Scene for displaying the winners"""
 
-    def __init__(self, parent):
+    def __init__(self, parent) -> None:
         super().__init__(parent, Color("gold"))
         self.top_label = None
         self.labels = []
 
-    def setup(self):
+    def setup(self) -> None:
         self.clear()
         self.top_label = gui.elements.UILabel(
             pg.Rect(200, 100, 400, 50), "Winner(s):", self.parent.ui_manager
@@ -300,10 +300,10 @@ class EndScene(Scene):
                 )
             )
 
-    def draw(self):
+    def draw(self) -> None:
         pass
 
-    def process_events(self, event):
+    def process_events(self, event) -> None:
         if event.type == KEYDOWN:
             if event.key == K_RETURN:
                 self.parent.running = False
