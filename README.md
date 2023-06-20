@@ -1,5 +1,5 @@
 # Documentation
-The pre-built documentation is in folder `docs`.  
+The pre-built documentation is in folder `docs` (both in html and pdf).  
 The *very easy to read* UML diagrams generated with pyreverse can be found at `docs/diagrams` (they have cycles, probably because TYPE_CHECKING value is ignored in pyreverse?).
 
 # Game controls
@@ -23,4 +23,5 @@ The binary will be `dist/main`.
 
 # Things to improve
 There is a possibility that the randomly picked tile cannot be placed at any position, in that case the tileset should be shuffled.  
-Overall code quality... it's terrible
+Overall code quality... it's terrible.  
+Obviously: graphics
