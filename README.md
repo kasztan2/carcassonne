@@ -1,1 +1,0 @@
-TODO: check whether a tile can be placed at all
