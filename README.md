@@ -1,6 +1,6 @@
 # Documentation
 The pre-built documentation is in folder `docs`.  
-The **very easy to read** UML diagrams generated with pyreverse can be found at `docs/diagrams`.
+The *very easy to read* UML diagrams generated with pyreverse can be found at `docs/diagrams`.
 
 # Game controls
 `return` - submit form / end program at the end  
