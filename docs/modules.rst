@@ -1,4 +1,4 @@
-projekt2
+Carcassonne documentation
 ========
 
 .. toctree::
