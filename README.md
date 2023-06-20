@@ -11,7 +11,8 @@ The UML diagrams generated with pyreverse can be found at `docs/diagrams`.
 Binaries can be created using `pyinstaller`:  
 ```bash
 pyinstaller main.spec
-```.  
+```
+.  
 The binary will be `dist/main`.
 
 # Things to improve
