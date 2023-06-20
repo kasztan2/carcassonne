@@ -9,6 +9,7 @@ The *very easy to read* UML diagrams generated with pyreverse can be found at `d
 
 # Running the game (using python interpreter)
 ```bash
+pip install -r requirements.txt
 python3 main.py
 ```
 
