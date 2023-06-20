@@ -1,3 +1,5 @@
 *__pycache__
 .vscode
 building_docs/_build
+build
+dist
