@@ -4,17 +4,7 @@ import pygame_gui as gui
 from view.scenes import WelcomeScene, GameScene, EndScene
 
 
-# singleton magic from stackoverflow: https://stackoverflow.com/questions/6760685/creating-a-singleton-in-python
-class Singleton(type):
-    _instances = {}
-
-    def __call__(cls, *args, **kwargs):
-        if cls not in cls._instances:
-            cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
-        return cls._instances[cls]
-
-
-class GameView(object, metaclass=Singleton):
+class GameView(object):
     """Manages the whole graphics of the game"""
 
     def __init__(self):
