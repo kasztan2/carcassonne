@@ -22,6 +22,6 @@ pyinstaller main.spec
 The binary will be `dist/main`.
 
 # Things to improve
-There is a possibility that the randomly picked tile cannot be placed at any position, in that case the tileset should be shuffled.  
-Overall code quality... it's terrible.  
-Obviously: graphics
+1. There is a possibility that the randomly picked tile cannot be placed at any position, in that case the tileset should be shuffled.  
+2. Overall code quality... it's terrible.  
+3. Obviously: graphics
