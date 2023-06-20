@@ -13,3 +13,7 @@ Binaries can be created using `pyinstaller`:
 pyinstaller main.spec
 ```.  
 The binary will be `dist/main`.
+
+# Things to improve
+There is a possibility that the randomly picked tile cannot be placed at any position, in that case the tileset should be shuffled.  
+Overall code quality... it's terrible
