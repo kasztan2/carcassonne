@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>logic package &mdash; Carcassonne - documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="main module" href="main.html" />
+    <link rel="prev" title="projekt2" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Carcassonne
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">projekt2</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">logic package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-logic.const">logic.const module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-logic.feature">logic.feature module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#logic.feature.Connection"><code class="docutils literal notranslate"><span class="pre">Connection</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#logic.feature.Feature"><code class="docutils literal notranslate"><span class="pre">Feature</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-logic.game">logic.game module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#logic.game.CarcassonneGame"><code class="docutils literal notranslate"><span class="pre">CarcassonneGame</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-logic.player">logic.player module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#logic.player.Player"><code class="docutils literal notranslate"><span class="pre">Player</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-logic.scoring">logic.scoring module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#logic.scoring.Scorer"><code class="docutils literal notranslate"><span class="pre">Scorer</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-logic.tile">logic.tile module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#logic.tile.Tile"><code class="docutils literal notranslate"><span class="pre">Tile</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-logic.utils">logic.utils module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#logic.utils.Coords"><code class="docutils literal notranslate"><span class="pre">Coords</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#logic.utils.get_side_conn_list"><code class="docutils literal notranslate"><span class="pre">get_side_conn_list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#logic.utils.invert_side"><code class="docutils literal notranslate"><span class="pre">invert_side()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#logic.utils.is_nearby_connection"><code class="docutils literal notranslate"><span class="pre">is_nearby_connection()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#logic.utils.is_nearby_feature"><code class="docutils literal notranslate"><span class="pre">is_nearby_feature()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#logic.utils.parse_connection_number"><code class="docutils literal notranslate"><span class="pre">parse_connection_number()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-logic">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="main.html">main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="view.html">view package</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Carcassonne</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">projekt2</a></li>
+      <li class="breadcrumb-item active">logic package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/logic.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="logic-package">
+<h1>logic package<a class="headerlink" href="#logic-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-logic.const">
+<span id="logic-const-module"></span><h2>logic.const module<a class="headerlink" href="#module-logic.const" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-logic.feature">
+<span id="logic-feature-module"></span><h2>logic.feature module<a class="headerlink" href="#module-logic.feature" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="logic.feature.Connection">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">logic.feature.</span></span><span class="sig-name descname"><span class="pre">Connection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">side</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#logic.feature.Connection" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents a connection (ability to connect to certain point on the tile) from a feature</p>
+<section id="attributes">
+<h3>Attributes<a class="headerlink" href="#attributes" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>side<span class="classifier">int</span></dt><dd><p>Side, numbered from left side clockwise</p>
+</dd>
+<dt>number<span class="classifier">int</span></dt><dd><p>Number of the connection on the side (0 to 2)</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="logic.feature.Connection.rotate_once">
+<span class="sig-name descname"><span class="pre">rotate_once</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#logic.feature.Connection.rotate_once" title="Permalink to this definition"></a></dt>
+<dd><p>Rotate 90 degrees to the right</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="logic.feature.Connection.to_number">
+<span class="sig-name descname"><span class="pre">to_number</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#logic.feature.Connection.to_number" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a number from 0 to 11 (beginning with left side at the bottom)</p>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="logic.feature.Feature">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">logic.feature.</span></span><span class="sig-name descname"><span class="pre">Feature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connections</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#logic.feature.Connection" title="logic.feature.Connection"><span class="pre">Connection</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#logic.feature.Feature" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents a feature (farm, road, city, city with pennant or cloister)</p>
+<section id="id1">
+<h3>Attributes<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>type<span class="classifier">int</span></dt><dd><p>Type of the feature</p>
+</dd>
+<dt>connections<span class="classifier">Sequence[Connection]</span></dt><dd><p>Connections (open “ports”) to other features</p>
+</dd>
+<dt>meeple<span class="classifier">Player</span></dt><dd><p>Player that has a meeple on this feature (possibly None)</p>
+</dd>
+<dt>uuid<span class="classifier">UUID</span></dt><dd><p>Effect of wrong debugging, probably could be ommited</p>
+</dd>
+<dt>bindings<span class="classifier">Sequence[Feature]</span></dt><dd><p>The actual connections to the other features (“from this feature I <em>can get to</em> any other feature in this list”)</p>
+</dd>
+<dt>parent_tile<span class="classifier">Tile</span></dt><dd><p>The tile this feature belongs to</p>
+</dd>
+<dt>scored<span class="classifier">bool</span></dt><dd><p>Whether it has been counted at the end (while counting open features)</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="logic.feature.Feature.bind">
+<span class="sig-name descname"><span class="pre">bind</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#logic.feature.Feature" title="logic.feature.Feature"><span class="pre">Feature</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#logic.feature.Feature.bind" title="Permalink to this definition"></a></dt>
+<dd><p>Binds to the given feature (makes it able to go from one to another)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="logic.feature.Feature.rotate">
+<span class="sig-name descname"><span class="pre">rotate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">times</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#logic.feature.Feature.rotate" title="Permalink to this definition"></a></dt>
+<dd><p>Rotate feature by 90 degrees clockwise <cite>times</cite> times</p>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+<section id="module-logic.game">
+<span id="logic-game-module"></span><h2>logic.game module<a class="headerlink" href="#module-logic.game" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="logic.game.CarcassonneGame">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">logic.game.</span></span><span class="sig-name descname"><span class="pre">CarcassonneGame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">starting_tile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#logic.tile.Tile" title="logic.tile.Tile"><span class="pre">Tile</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">tileset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#logic.tile.Tile" title="logic.tile.Tile"><span class="pre">Tile</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">players</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#logic.player.Player" title="logic.player.Player"><span class="pre">Player</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#logic.game.CarcassonneGame" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents the whole game (game logic)
+Probably makes it possible to create multiple game states in one program</p>
+<section id="id2">
+<h3>Attributes<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>tileset<span class="classifier">Sequence[Tile]</span></dt><dd><p>List of all tiles in the game except the starting one</p>
+</dd>
+<dt>players<span class="classifier">Sequence[Player]</span></dt><dd><p>List of players in the game</p>
+</dd>
+<dt>turn<span class="classifier">int</span></dt><dd><p>Index of the player whose turn is now</p>
+</dd>
+<dt>board<span class="classifier">dict</span></dt><dd><p>Dictionary mapping Coords to tiles, represents the actual board (only tiles that have been placed)</p>
+</dd>
+<dt>lastTile<span class="classifier">Tile</span></dt><dd><p>The last (most recent) tile placed in the game</p>
+</dd>
+<dt>phase<span class="classifier">int</span></dt><dd><p>0 - placing a new tile
+1 - placing a meeple (or decision not to place any)</p>
+</dd>
+<dt>scorer<span class="classifier">Scorer</span></dt><dd><p>Object used for routing on the features and dealing with score</p>
+</dd>
+<dt>tlesChanged<span class="classifier">set</span></dt><dd><p>A set of tiles that have changed in effect of placing the most recent meeple</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="logic.game.CarcassonneGame.from_file_and_names">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_file_and_names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">playerNames</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#logic.game.CarcassonneGame.from_file_and_names" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a new instance of CarcassonneGame from a given tileset file and names of the players</p>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading"></a></h4>
+<dl class="simple">
+<dt>filename<span class="classifier">str</span></dt><dd><p>Filename of the file to read the tileset from</p>
+</dd>
+<dt>playerNames: Sequence[str]</dt><dd><p>Names of the players</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="logic.game.CarcassonneGame.get_current_player_color">
+<span class="sig-name descname"><span class="pre">get_current_player_color</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#logic.game.CarcassonneGame.get_current_player_color" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="logic.game.CarcassonneGame.get_current_player_name">
+<span class="sig-name descname"><span class="pre">get_current_player_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#logic.game.CarcassonneGame.get_current_player_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="logic.game.CarcassonneGame.get_current_tile">
+<span class="sig-name descname"><span class="pre">get_current_tile</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#logic.game.CarcassonneGame.get_current_tile" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="logic.game.CarcassonneGame.get_winners">
+<span class="sig-name descname"><span class="pre">get_winners</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#logic.game.CarcassonneGame.get_winners" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="logic.game.CarcassonneGame.handleEnd">
+<span class="sig-name descname"><span class="pre">handleEnd</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#logic.game.CarcassonneGame.handleEnd" title="Permalink to this definition"></a></dt>
+<dd><p>Score open features at the end of the game</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="logic.game.CarcassonneGame.is_finished">
+<span class="sig-name descname"><span class="pre">is_finished</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#logic.game.CarcassonneGame.is_finished" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="logic.game.CarcassonneGame.next_turn">
+<span class="sig-name descname"><span class="pre">next_turn</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#logic.game.CarcassonneGame.next_turn" title="Permalink to this definition"></a></dt>
+<dd><p>Go to the next turn</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="logic.game.CarcassonneGame.parseFeatureText">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parseFeatureText</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#logic.feature.Feature" title="logic.feature.Feature"><span class="pre">Feature</span></a></span></span><a class="headerlink" href="#logic.game.CarcassonneGame.parseFeatureText" title="Permalink to this definition"></a></dt>
+<dd><p>Helper function to parse a single feature from a string</p>
+<section id="id3">
+<h4>Parameters<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h4>
+<dl class="simple">
+<dt>feature<span class="classifier">str</span></dt><dd><p>String of the feature to parse</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="logic.game.CarcassonneGame.placeMeeple">
+<span class="sig-name descname"><span class="pre">placeMeeple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feature_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#logic.game.CarcassonneGame.placeMeeple" title="Permalink to this definition"></a></dt>
+<dd><p>Place a meeple</p>
+<section id="id4">
+<h4>Parameters<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h4>
+<dl class="simple">
+<dt>feature_index<span class="classifier">int</span></dt><dd><p>Index of the feature on the tile to place the meeple on</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="logic.game.CarcassonneGame.place_tile">
+<span class="sig-name descname"><span class="pre">place_tile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coords</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#logic.utils.Coords" title="logic.utils.Coords"><span class="pre">Coords</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#logic.game.CarcassonneGame.place_tile" title="Permalink to this definition"></a></dt>
+<dd><p>Place a tile</p>
+<section id="id5">
+<h4>Parameters<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h4>
+<dl class="simple">
+<dt>coords<span class="classifier">Coords | tuple[int, int] | list[int, int]</span></dt><dd><p>Coords to place the tile on</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+<section id="module-logic.player">
+<span id="logic-player-module"></span><h2>logic.player module<a class="headerlink" href="#module-logic.player" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="logic.player.Player">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">logic.player.</span></span><span class="sig-name descname"><span class="pre">Player</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#logic.player.Player" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents a player</p>
+<section id="id6">
+<h3>Attributes<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>name<span class="classifier">str</span></dt><dd><p>Name of the player</p>
+</dd>
+<dt>color<span class="classifier">tuple</span></dt><dd><p>Color of the player (color of the meeples)</p>
+</dd>
+<dt>score<span class="classifier">int</span></dt><dd><p>Current score</p>
+</dd>
+<dt>meeplesLeft<span class="classifier">int</span></dt><dd><p>How many meeples the player has left</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="logic.player.Player.addScore">
+<span class="sig-name descname"><span class="pre">addScore</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">score_to_add</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#logic.player.Player.addScore" title="Permalink to this definition"></a></dt>
+<dd><p>Updates the score</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="logic.player.Player.minusMeeple">
+<span class="sig-name descname"><span class="pre">minusMeeple</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#logic.player.Player.minusMeeple" title="Permalink to this definition"></a></dt>
+<dd><p>Subtract one meeple when placing it on the board</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="logic.player.Player.plusMeeple">
+<span class="sig-name descname"><span class="pre">plusMeeple</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#logic.player.Player.plusMeeple" title="Permalink to this definition"></a></dt>
+<dd><p>Add one meeple when a feature is completed</p>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+<section id="module-logic.scoring">
+<span id="logic-scoring-module"></span><h2>logic.scoring module<a class="headerlink" href="#module-logic.scoring" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="logic.scoring.Scorer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">logic.scoring.</span></span><span class="sig-name descname"><span class="pre">Scorer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#logic.scoring.Scorer" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="logic.scoring.Scorer.calculate_points_for_closed">
+<span class="sig-name descname"><span class="pre">calculate_points_for_closed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#logic.feature.Feature" title="logic.feature.Feature"><span class="pre">Feature</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#logic.scoring.Scorer.calculate_points_for_closed" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate points for a closed feature (returns 0 for open features)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="logic.scoring.Scorer.calculate_points_for_open">
+<span class="sig-name descname"><span class="pre">calculate_points_for_open</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#logic.feature.Feature" title="logic.feature.Feature"><span class="pre">Feature</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#logic.scoring.Scorer.calculate_points_for_open" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the points for an open feature (returns 0 for a closed feature)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="logic.scoring.Scorer.check_any_meeples">
+<span class="sig-name descname"><span class="pre">check_any_meeples</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#logic.feature.Feature" title="logic.feature.Feature"><span class="pre">Feature</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#logic.scoring.Scorer.check_any_meeples" title="Permalink to this definition"></a></dt>
+<dd><p>Check if there are any meeples on the feature</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="logic.scoring.Scorer.check_closed">
+<span class="sig-name descname"><span class="pre">check_closed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#logic.feature.Feature" title="logic.feature.Feature"><span class="pre">Feature</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#logic.scoring.Scorer.check_closed" title="Permalink to this definition"></a></dt>
+<dd><p>Check whether the feature is closed</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="logic.scoring.Scorer.count_closed_cities_near_farm">
+<span class="sig-name descname"><span class="pre">count_closed_cities_near_farm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#logic.feature.Feature" title="logic.feature.Feature"><span class="pre">Feature</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#logic.scoring.Scorer.count_closed_cities_near_farm" title="Permalink to this definition"></a></dt>
+<dd><p>Counts the number of cities touching the farm</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="logic.scoring.Scorer.get_city_features_near">
+<span class="sig-name descname"><span class="pre">get_city_features_near</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">farm_feature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#logic.feature.Feature" title="logic.feature.Feature"><span class="pre">Feature</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#logic.scoring.Scorer.get_city_features_near" title="Permalink to this definition"></a></dt>
+<dd><p>Get city features on the same tile that are touching the given feature (farm)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="logic.scoring.Scorer.get_connected_features">
+<span class="sig-name descname"><span class="pre">get_connected_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#logic.feature.Feature" title="logic.feature.Feature"><span class="pre">Feature</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#logic.feature.Feature" title="logic.feature.Feature"><span class="pre">Feature</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#logic.scoring.Scorer.get_connected_features" title="Permalink to this definition"></a></dt>
+<dd><p>Get all features that can be reached from a given feature (including itself)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="logic.scoring.Scorer.get_players_on_feature">
+<span class="sig-name descname"><span class="pre">get_players_on_feature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#logic.feature.Feature" title="logic.feature.Feature"><span class="pre">Feature</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#logic.player.Player" title="logic.player.Player"><span class="pre">Player</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#logic.scoring.Scorer.get_players_on_feature" title="Permalink to this definition"></a></dt>
+<dd><p>Get winning players on a given feature (with most meeples)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="logic.scoring.Scorer.remove_meeples">
+<span class="sig-name descname"><span class="pre">remove_meeples</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#logic.feature.Feature" title="logic.feature.Feature"><span class="pre">Feature</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">set</span></span></span><a class="headerlink" href="#logic.scoring.Scorer.remove_meeples" title="Permalink to this definition"></a></dt>
+<dd><p>Return meeples to their owners when a feature is completed</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="logic.scoring.Scorer.score_closed_feature">
+<span class="sig-name descname"><span class="pre">score_closed_feature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#logic.feature.Feature" title="logic.feature.Feature"><span class="pre">Feature</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">set</span></span></span><a class="headerlink" href="#logic.scoring.Scorer.score_closed_feature" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate points for closed feature -&gt; update scores -&gt; remove meeples</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="logic.scoring.Scorer.score_open_feature">
+<span class="sig-name descname"><span class="pre">score_open_feature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#logic.feature.Feature" title="logic.feature.Feature"><span class="pre">Feature</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#logic.scoring.Scorer.score_open_feature" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate points for open features -&gt; update scores -&gt; remove meeples (just in case)</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-logic.tile">
+<span id="logic-tile-module"></span><h2>logic.tile module<a class="headerlink" href="#module-logic.tile" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="logic.tile.Tile">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">logic.tile.</span></span><span class="sig-name descname"><span class="pre">Tile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">game</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#logic.game.CarcassonneGame" title="logic.game.CarcassonneGame"><span class="pre">CarcassonneGame</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">features</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#logic.feature.Feature" title="logic.feature.Feature"><span class="pre">Feature</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#logic.tile.Tile" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<section id="id7">
+<h3>Attributes<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h3>
+<dl class="simple">
+<dt>game<span class="classifier">CarcassonneGame</span></dt><dd><p>Game that this tile belongs to (doesn’t have to be on the board yet)</p>
+</dd>
+<dt>features<span class="classifier">Sequence[Feature]</span></dt><dd><p>Features that this tile consists of</p>
+</dd>
+<dt>uuid<span class="classifier">UUID</span></dt><dd><p>Again, wrong debugging, probably could be omitted</p>
+</dd>
+<dt>coords<span class="classifier">Coords</span></dt><dd><p>The coords of the tile on the board</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="logic.tile.Tile.ensureCorrect">
+<span class="sig-name descname"><span class="pre">ensureCorrect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#logic.tile.Tile.ensureCorrect" title="Permalink to this definition"></a></dt>
+<dd><p>Ensure that the tile is correct (features collectively have 12 unique connections)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="logic.tile.Tile.get_feature_by_connection">
+<span class="sig-name descname"><span class="pre">get_feature_by_connection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">connection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#logic.feature.Connection" title="logic.feature.Connection"><span class="pre">Connection</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#logic.feature.Feature" title="logic.feature.Feature"><span class="pre">Feature</span></a></span></span><a class="headerlink" href="#logic.tile.Tile.get_feature_by_connection" title="Permalink to this definition"></a></dt>
+<dd><p>Return a feature belonging to this tile with the given connection</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="logic.tile.Tile.placeMeeple">
+<span class="sig-name descname"><span class="pre">placeMeeple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ind</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">player</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#logic.tile.Tile.placeMeeple" title="Permalink to this definition"></a></dt>
+<dd><p>Place a meeple of the given player on the feature with index <cite>ind</cite></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="logic.tile.Tile.rotate">
+<span class="sig-name descname"><span class="pre">rotate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">times</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#logic.tile.Tile.rotate" title="Permalink to this definition"></a></dt>
+<dd><p>Rotate the tile by 90 degrees clockwise <cite>times</cite> times</p>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+<section id="module-logic.utils">
+<span id="logic-utils-module"></span><h2>logic.utils module<a class="headerlink" href="#module-logic.utils" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="logic.utils.Coords">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">logic.utils.</span></span><span class="sig-name descname"><span class="pre">Coords</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#logic.utils.Coords" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class to manage coordinates on a board</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="logic.utils.Coords.get_adjacent_coords">
+<span class="sig-name descname"><span class="pre">get_adjacent_coords</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#logic.utils.Coords" title="logic.utils.Coords"><span class="pre">Coords</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#logic.utils.Coords.get_adjacent_coords" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a list of adjacent coords (without itself)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="logic.utils.Coords.get_coords_around">
+<span class="sig-name descname"><span class="pre">get_coords_around</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#logic.utils.Coords" title="logic.utils.Coords"><span class="pre">Coords</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#logic.utils.Coords.get_coords_around" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a list of coords around and itself (to manage cloisters)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="logic.utils.Coords.to_tuple">
+<span class="sig-name descname"><span class="pre">to_tuple</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#logic.utils.Coords.to_tuple" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a tuple representation (x, y)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="logic.utils.get_side_conn_list">
+<span class="sig-prename descclassname"><span class="pre">logic.utils.</span></span><span class="sig-name descname"><span class="pre">get_side_conn_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">side</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#logic.utils.get_side_conn_list" title="Permalink to this definition"></a></dt>
+<dd><p>Get a list of feature types with connections on the given side of the given tile (used for checking if a tile can be placed)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="logic.utils.invert_side">
+<span class="sig-prename descclassname"><span class="pre">logic.utils.</span></span><span class="sig-name descname"><span class="pre">invert_side</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">side</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#logic.utils.invert_side" title="Permalink to this definition"></a></dt>
+<dd><p>Convert a side to its opposite (left-right, top-bottom)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="logic.utils.is_nearby_connection">
+<span class="sig-prename descclassname"><span class="pre">logic.utils.</span></span><span class="sig-name descname"><span class="pre">is_nearby_connection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conn1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conn2</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#logic.utils.is_nearby_connection" title="Permalink to this definition"></a></dt>
+<dd><p>Check if feature with <cite>conn1</cite> connection is touching a feature with <cite>conn2</cite> connection</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="logic.utils.is_nearby_feature">
+<span class="sig-prename descclassname"><span class="pre">logic.utils.</span></span><span class="sig-name descname"><span class="pre">is_nearby_feature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#logic.feature.Feature" title="logic.feature.Feature"><span class="pre">Feature</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">f2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#logic.feature.Feature" title="logic.feature.Feature"><span class="pre">Feature</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#logic.utils.is_nearby_feature" title="Permalink to this definition"></a></dt>
+<dd><p>Check if two features are touching each other</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="logic.utils.parse_connection_number">
+<span class="sig-prename descclassname"><span class="pre">logic.utils.</span></span><span class="sig-name descname"><span class="pre">parse_connection_number</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">connection_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#logic.feature.Connection" title="logic.feature.Connection"><span class="pre">Connection</span></a></span></span><a class="headerlink" href="#logic.utils.parse_connection_number" title="Permalink to this definition"></a></dt>
+<dd><p>Make a Connection object out of a number from 0 to 11</p>
+</dd></dl>
+
+</section>
+<section id="module-logic">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-logic" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules.html" class="btn btn-neutral float-left" title="projekt2" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="main.html" class="btn btn-neutral float-right" title="main module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Krzysztof Chorzempa.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
