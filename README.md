@@ -23,5 +23,5 @@ The binary will be `dist/main`.
 
 # Things to improve
 1. There is a possibility that the randomly picked tile cannot be placed at any position, in that case the tileset should be shuffled.  
-2. Overall code quality... it's terrible.  
+2. Overall code quality.  
 3. Obviously: graphics

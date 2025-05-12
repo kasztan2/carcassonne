@@ -3,3 +3,4 @@
 building_docs/_build
 build
 dist
+*venv/
